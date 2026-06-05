@@ -1,0 +1,88 @@
+---
+title: Architecture
+description: How the NQRust Analytics services fit together to turn natural language into trustworthy SQL.
+---
+
+NQRust Analytics is a self-hosted platform that turns plain-language questions into validated SQL against your own databases. Rather than relying on a single prompt, it splits the problem across a small set of cooperating services: a web application, an AI reasoning service, a semantic modeling engine, and a Python data-transformation layer. Supporting infrastructure (a vector database and a metadata/demo PostgreSQL instance) completes the stack.
+
+The guiding principle is a clean separation between **meaning** and **execution**. Your business semantics live in an explicit model definition (see [What is MDL](/docs/concepts/what-is-mdl)), while the runtime is responsible for retrieving the right context, generating SQL, validating it, translating it for your database dialect, and running it.
+
+## Why correctness needs more than one component
+
+Reliable text-to-SQL is not the product of any single feature. It results from several responsibilities working together:
+
+| Concern | What it covers | Where it lives |
+|---------|----------------|----------------|
+| Schema linking | Choosing the models, columns, and relationships relevant to a question | MDL + vector retrieval (Qdrant) |
+| Context retrieval | Pulling the right definitions and instructions for the current question | Analytics Service retrieval pipeline |
+| SQL generation | Writing SQL against modeled objects | Analytics Service |
+| Validation & repair | Catching invalid SQL and recovering from failures | Analytics Service + Analytics Engine dry-run |
+| Semantic expansion | Turning modeled SQL into executable SQL the database understands | Analytics Engine |
+| Execution | Running the planned SQL against the target source | Analytics Engine / Ibis Server |
+
+Each step is handled by a dedicated service so the path from question to answer stays inspectable.
+
+## The services
+
+### Analytics UI
+
+The Analytics UI is the web application that users interact with. It hosts the question-and-answer experience, dashboards, saved views, and document uploads, and it owns user management and authentication. It persists application data (users, projects, dashboards, conversation history) and coordinates requests to the other services. When a user asks a question, the UI forwards it to the Analytics Service and renders the results, charts, and generated SQL that are returned.
+
+### Analytics Service
+
+The Analytics Service is the AI layer. Given a natural-language question, it:
+
+1. Retrieves relevant context — models, columns, relationships, and instructions — using embeddings stored in Qdrant.
+2. Generates SQL written against the modeled objects defined in your MDL.
+3. Validates the candidate SQL, asking the Analytics Engine to check it and retrying or repairing when something is wrong.
+
+It orchestrates the reasoning loop: deciding what context to fetch, prompting the language model, and refining results until they pass validation.
+
+### Analytics Engine
+
+The Analytics Engine is the semantic core. It holds the compiled MDL and acts as the source of truth for what your models mean. Its responsibilities include:
+
+- Maintaining model context and state for a project.
+- Expanding MDL semantics — models, calculated fields, relationships, and views — into concrete SQL.
+- Translating SQL into the dialect of the target database.
+- Validating SQL (dry-run) and executing it against the data source.
+
+In short, the Engine takes SQL written against abstract modeled objects, produces SQL a real database can run, and then runs it.
+
+### Ibis Server
+
+The Ibis Server is a Python data-transformation layer that sits alongside the Engine. It provides connectivity and query execution against supported data sources through a common Python interface, handling dialect-specific behavior and result translation. The Analytics Engine delegates to the Ibis Server when a query needs to be executed against the underlying source.
+
+## Supporting infrastructure
+
+### Qdrant (vector database)
+
+Qdrant stores the embeddings that power semantic retrieval. When the Analytics Service needs the right schema context or prior examples for a question, it searches Qdrant for the closest matches. This lets the system surface the relevant subset of a large model instead of sending everything to the language model.
+
+### PostgreSQL (metadata and demo database)
+
+A PostgreSQL instance serves two roles in the default deployment: it holds platform metadata used by the application, and it ships with a sample dataset (Northwind) so you can explore the product immediately after installation. You can point NQRust Analytics at your own databases for real workloads.
+
+## The query path end to end
+
+Reading the architecture as a single request:
+
+1. A user asks a question in the **Analytics UI**.
+2. The UI sends it to the **Analytics Service**, which retrieves relevant model context from **Qdrant** and generates SQL against the MDL.
+3. The candidate SQL is validated with the **Analytics Engine**, which expands MDL semantics and dry-runs the query; the Service repairs and retries if needed.
+4. The **Analytics Engine** (via the **Ibis Server** when executing) translates and runs the final SQL against the target database.
+5. Results flow back through the UI as a table, chart, or saved dashboard.
+
+<Callout type="info">Screenshot coming soon.</Callout>
+
+## Summary
+
+NQRust Analytics keeps context and execution apart:
+
+- The **Analytics UI** is where users ask questions and manage projects, users, and dashboards.
+- The **Analytics Service** retrieves context, generates SQL, and validates it.
+- The **Analytics Engine** expands the model, translates dialects, and executes queries.
+- The **Ibis Server** provides the Python connectivity layer for running those queries.
+- **Qdrant** and **PostgreSQL** supply embeddings storage and metadata/demo data.
+
+That separation is what makes the platform inspectable, portable, and dependable. To see how a question moves through these components in practice, read [How it works](/docs/concepts/how-it-works).

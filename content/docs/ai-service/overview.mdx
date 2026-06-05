@@ -1,0 +1,51 @@
+---
+title: AI Service Overview
+description: How NQRust Analytics configures its LLM provider through config.yaml, and where to start.
+---
+
+The Analytics Service is the part of NQRust Analytics that turns plain-language
+questions into SQL. It does this by calling a large language model (LLM) and an
+embedding model, both of which you choose and configure. Because NQRust
+Analytics is self-hosted, you provide your own model access; there is no managed
+inference included.
+
+## How configuration works
+
+All model settings live in a single file, `config.yaml`. This file controls:
+
+- **Which LLM generates SQL** (the default in the installer is `gpt-4o-mini`).
+- **Which embedding model** indexes your schema for retrieval.
+- **Which pipelines** use which models, so you can mix and match per step.
+
+Model access goes through a LiteLLM-style abstraction, which means any provider
+that LiteLLM understands can be configured by editing `config.yaml`. You do not
+need to write code for the common cases.
+
+## Ready-made templates
+
+You do not have to author `config.yaml` from scratch. The installer ships
+**15 provider templates** that you can copy and adjust:
+
+OpenAI, Anthropic, Azure OpenAI, AWS Bedrock, Google AI Studio, Google Vertex
+AI, DeepSeek, xAI Grok, Groq, Qwen3, Zhipu, OpenRouter, Ollama, LM Studio, and a
+generic local-LLM template.
+
+Select the template that matches your provider, enter your credentials and model
+names, and restart the service.
+
+## Where to go next
+
+<Cards>
+  <Card title="Use a Custom LLM or Embedder" href="/docs/ai-service/custom-llm">
+    Point NQRust Analytics at the model provider of your choice.
+  </Card>
+  <Card title="Customization" href="/docs/ai-service/customization">
+    Add a provider that isn't covered by a template, and wire it into pipelines.
+  </Card>
+  <Card title="Good Practices" href="/docs/ai-service/good-practices">
+    Tuning tips for latency, cost, and model selection.
+  </Card>
+  <Card title="Langfuse Setup" href="/docs/ai-service/langfuse">
+    Trace and monitor your AI pipelines for observability.
+  </Card>
+</Cards>

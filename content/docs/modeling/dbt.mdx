@@ -1,0 +1,80 @@
+---
+title: dbt integration
+description: Convert an existing dbt project into NQRust Analytics MDL with the Analytics Launcher.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+If you already model your data with [dbt](https://www.getdbt.com/), you can reuse
+that work as your semantic layer. The **Analytics Launcher** includes a converter
+that turns a dbt project into NQRust Analytics [MDL](/docs/concepts/what-is-mdl) —
+models, columns, and relationship mappings — so you do not have to redefine them
+by hand.
+
+## How it works
+
+The converter reads the artifacts dbt produces when you build your project (the
+`manifest.json` and `catalog.json` under `target/`) and generates MDL model
+definitions from them.
+
+The target data source must be supported by **both** dbt and the Analytics
+Engine. The connectors that NQRust Analytics supports are listed under
+[Connect data sources](/docs/connect/overview).
+
+## Convert a dbt project
+
+<Steps>
+
+<Step>
+
+### Build your dbt project
+
+Run your dbt project so the `target/manifest.json` and `target/catalog.json`
+artifacts exist (for example via `dbt compile` or `dbt docs generate`).
+
+</Step>
+
+<Step>
+
+### Run the converter
+
+Use the `dbt convert` command of the Analytics Launcher, pointing it at the dbt
+artifacts and an output directory:
+
+```bash
+./analytics-launcher dbt convert \
+  --manifest ./dbt_project/target/manifest.json \
+  --catalog ./dbt_project/target/catalog.json \
+  --output ./mdl_models
+```
+
+<Callout type="info">
+  Available flags can vary by launcher version. Run
+  `./analytics-launcher dbt convert --help` to see the exact options for your
+  build.
+</Callout>
+
+</Step>
+
+<Step>
+
+### Use the generated MDL
+
+The converter parses the dbt manifest and catalog, generates MDL model
+definitions and relationship mappings, and writes the structured MDL JSON to your
+output directory. From there, you can load it into NQRust Analytics and refine it.
+
+</Step>
+
+</Steps>
+
+## Next steps
+
+<Cards>
+  <Card title="Modeling overview" href="/docs/modeling/overview">
+    Refine the generated models, relationships, and views.
+  </Card>
+  <Card title="What is MDL?" href="/docs/concepts/what-is-mdl">
+    Understand the semantic contract dbt is converted into.
+  </Card>
+</Cards>

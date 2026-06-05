@@ -1,0 +1,32 @@
+---
+title: What is NQRust SQL?
+description: A standardized query syntax that works across data sources within NQRust Analytics.
+---
+
+NQRust SQL is a query language built for the NQRust Analytics platform. It provides a standardized syntax for querying data from many different sources, regardless of the database technology underneath.
+
+## Two SQL views
+
+NQRust Analytics shows your query in two forms:
+
+- **Result NQRust SQL** — the standardized statement used to generate the result. Open it with the **View Full SQL** button.
+- **Original SQL** — the native dialect of your source (for example BigQuery or MySQL). This view lets you see the translation between NQRust SQL and your database's own syntax.
+
+<Screenshot src="/images/docs/asking/nqrust-sql-and-original-sql.png" caption="The SQL view showing Result NQRust SQL alongside the Original SQL in the source's native dialect" />
+
+## Why use it
+
+- **Standardized syntax** — you do not need to learn the quirks of every database dialect.
+- **Simplified querying** — an intuitive syntax expresses complex operations more easily.
+- **Built into NQRust Analytics** — it integrates naturally with the rest of your analysis workflow.
+
+## Important limitation
+
+<Callout type="warn">
+NQRust SQL is intended to run inside NQRust Analytics. Copying NQRust SQL and pasting it directly into another database may cause errors or unexpected results, because the syntax is not portable to external systems without modification.
+</Callout>
+
+<Cards>
+  <Card title="Adjust answers" href="/docs/asking/adjust-answer" />
+  <Card title="Know your answers" href="/docs/asking/answer" />
+</Cards>

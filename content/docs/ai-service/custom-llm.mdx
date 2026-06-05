@@ -1,0 +1,138 @@
+---
+title: Use a Custom LLM or Embedder
+description: Configure NQRust Analytics to run on the LLM and embedding provider of your choice via config.yaml.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+NQRust Analytics is provider-agnostic: you choose which LLM generates SQL and
+which embedding model indexes your schema. Model access is routed through a
+LiteLLM-style abstraction, so most providers can be enabled by editing
+`config.yaml` alone.
+
+
+<Callout type="info">
+For the most predictable results, well-tested chat models such as OpenAI
+GPT-4o or GPT-4o-mini tend to perform best. Smaller or less common models work,
+but may require more tuning. The installer's default generation model is
+`gpt-4o-mini`.
+</Callout>
+
+## Steps
+
+<Steps>
+
+<Step>
+### Check whether your model is already supported
+
+Before configuring anything, confirm that your provider and model are known to
+the underlying LiteLLM layer. If they are, you can usually enable them by
+editing `config.yaml` without writing any code. The installer also ships ready
+-made templates for 15 providers — OpenAI, Anthropic, Azure OpenAI, AWS Bedrock,
+Google AI Studio, Google Vertex AI, DeepSeek, xAI Grok, Groq, Qwen3, Zhipu,
+OpenRouter, Ollama, LM Studio, and a generic local-LLM template — which is the
+fastest path for common cases.
+</Step>
+
+<Step>
+### Start from a template
+
+Rather than authoring `config.yaml` by hand, copy the template that matches your
+provider and use it as a base. Provide your credentials, your API
+endpoint, and the model name(s) you intend to use.
+</Step>
+
+<Step>
+### Configure your LLM provider
+
+In `config.yaml`, define the LLM block. Set the model name, the API endpoint,
+and any provider-specific options. A typical LLM block looks like this:
+
+```yaml
+type: llm
+provider: litellm_llm
+models:
+  - model: gpt-4o-mini
+    api_base: https://api.openai.com/v1
+    timeout: 120
+    kwargs:
+      temperature: 0
+      n: 1
+      max_tokens: 4096
+      response_format:
+        type: json_object
+```
+
+Models are referenced elsewhere using a `<provider>.<model_name>` notation — for
+example `litellm_llm.gpt-4o-mini`.
+</Step>
+
+<Step>
+### Configure your embedder
+
+If you are also customizing the embedding model, define an embedder block and
+make sure the embedding dimension matches what your vector store expects. Set
+`embedding_model_dim` in the `document_store` block accordingly:
+
+```yaml
+type: embedder
+provider: litellm_embedder
+models:
+  - model: text-embedding-3-large
+    api_base: https://api.openai.com/v1
+    timeout: 120
+---
+type: document_store
+provider: qdrant
+embedding_model_dim: 3072
+```
+
+The embedding dimension must agree across both blocks, or indexing will fail.
+</Step>
+
+<Step>
+### Restart the service
+
+Apply the changes by restarting NQRust Analytics. The new model configuration
+takes effect on startup.
+</Step>
+
+</Steps>
+
+## Running a local model with Ollama
+
+Ollama lets you run open models locally. You can run it either as
+a desktop application or inside a Docker container; the only difference is the
+endpoint that `config.yaml` targets.
+
+When the service and Ollama run on the same host, use the host's local address.
+When NQRust Analytics runs in Docker and needs to reach an Ollama instance on
+the host machine, use the host-gateway address instead of `localhost`, because
+`localhost` inside a container refers to the container itself.
+
+```yaml
+type: llm
+provider: litellm_llm
+models:
+  - model: ollama_chat/llama3.1:8b
+    api_base: http://host.docker.internal:11434
+    timeout: 120
+    kwargs:
+      temperature: 0
+```
+
+<Callout type="warn">
+Confirm that the container can reach the Ollama endpoint. A misconfigured
+`api_base` is the most common cause of connection errors with local models.
+</Callout>
+
+## See also
+
+<Cards>
+  <Card title="Customization" href="/docs/ai-service/customization">
+    Add a provider that no template covers.
+  </Card>
+  <Card title="Good Practices" href="/docs/ai-service/good-practices">
+    Tuning tips for latency and cost.
+  </Card>
+</Cards>

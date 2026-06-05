@@ -1,0 +1,75 @@
+---
+title: Connect Snowflake
+description: Connect a Snowflake database to NQRust Analytics.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<Screenshot src="/images/docs/connect/snowflake-form.png" caption="The Snowflake connection form in the Analytics UI" />
+
+## Connection settings
+
+| Field | Description |
+| --- | --- |
+| Display name | (required) The name this database shows up as in the Analytics UI. |
+| Account | (required) Your Snowflake account, in the form `<snowflake_org_id>-<snowflake_user_id>`. |
+| Database name | (required) The database you want to connect to. |
+| Schema | (required) The schema within that database. |
+| Warehouse | (optional) Virtual warehouse for query execution. If blank, the account's default warehouse is used (if configured). |
+| User | (required) The database username. |
+| Authentication method | Choose **Password authentication** or **Key pair authentication**. |
+| Password | (required for password authentication) The user's password. |
+
+## Authentication
+
+You can authenticate two ways:
+
+1. **Password** — a username and password.
+2. **Key pair** — a username plus an unencrypted RSA private key file.
+
+<Callout type="warn">
+  Snowflake plans to deprecate password authentication by November 2025. Switch
+  to key pair authentication.
+</Callout>
+
+If you encounter an error about an encrypted private key, decrypt it with OpenSSL
+before uploading. NQRust Analytics requires an unencrypted RSA private key in
+DER format.
+
+## Steps
+
+<Steps>
+
+<Step>
+### Enter connection details
+Complete the connection settings above and continue. Under **Authentication
+method**, password authentication is being deprecated (around November 2025).
+Key pair authentication is recommended, where you provide a private key instead
+of a password.
+</Step>
+
+<Step>
+### Select tables
+Choose the tables you want. Each table becomes a data model.
+<Screenshot src="/images/docs/connect/select-tables.png" caption="Selecting the tables to import as data models" />
+</Step>
+
+<Step>
+### Define relationships
+Connect your tables using their primary and foreign keys, or add the
+relationships manually.
+<Screenshot src="/images/docs/connect/define-relationships.png" caption="Defining relationships between the imported tables" />
+</Step>
+
+<Step>
+
+### Start exploring
+
+Your tables now appear on the **Modeling** page. Open the **Home** page and ask
+questions about your data in natural language.
+
+<Screenshot src="/images/docs/connect/start-exploring.png" caption="Asking a question about the connected data on the Home page" />
+
+</Step>
+
+</Steps>

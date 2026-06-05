@@ -1,0 +1,54 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+/* ------------------------------------------------------------------ *
+ * NQRust Analytics — warm orange theme.
+ * Neutral, low-saturation warm base for an elegant/professional feel,
+ * with orange reserved as the accent (links, active items, buttons, ring).
+ * ------------------------------------------------------------------ */
+:root {
+  --color-fd-background: hsl(36, 50%, 98.5%);
+  --color-fd-foreground: hsl(24, 28%, 14%);
+  --color-fd-primary: hsl(24, 88%, 48%);
+  --color-fd-primary-foreground: hsl(36, 100%, 98%);
+  --color-fd-border: hsla(28, 45%, 76%, 0.5);
+  --color-fd-ring: hsl(24, 88%, 48%);
+  --color-fd-accent: hsl(32, 60%, 93%);
+  --color-fd-accent-foreground: hsl(24, 75%, 32%);
+  --color-fd-muted: hsl(34, 45%, 95.5%);
+  --color-fd-muted-foreground: hsl(28, 14%, 42%);
+  --color-fd-secondary: hsl(34, 50%, 95%);
+  --color-fd-secondary-foreground: hsl(24, 45%, 20%);
+  --color-fd-card: hsl(40, 60%, 99.5%);
+  --color-fd-card-foreground: hsl(24, 28%, 14%);
+  --color-fd-popover: hsl(40, 60%, 99.5%);
+  --color-fd-popover-foreground: hsl(24, 28%, 14%);
+}
+
+.dark {
+  --color-fd-background: hsl(24, 16%, 7%);
+  --color-fd-foreground: hsl(34, 22%, 90%);
+  --color-fd-primary: hsl(26, 92%, 56%);
+  --color-fd-primary-foreground: hsl(24, 60%, 9%);
+  --color-fd-border: hsla(28, 30%, 45%, 0.28);
+  --color-fd-ring: hsl(26, 92%, 56%);
+  --color-fd-accent: hsl(24, 22%, 17%);
+  --color-fd-accent-foreground: hsl(28, 78%, 72%);
+  --color-fd-muted: hsl(24, 18%, 12%);
+  --color-fd-muted-foreground: hsl(32, 14%, 60%);
+  --color-fd-secondary: hsl(24, 18%, 15%);
+  --color-fd-secondary-foreground: hsl(34, 22%, 90%);
+  --color-fd-card: hsl(24, 17%, 9.5%);
+  --color-fd-card-foreground: hsl(34, 22%, 90%);
+  --color-fd-popover: hsl(24, 17%, 9%);
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html > body[data-scroll-locked] {
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}

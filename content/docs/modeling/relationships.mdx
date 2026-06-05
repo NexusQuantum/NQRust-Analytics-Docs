@@ -1,0 +1,75 @@
+---
+title: Relationships
+description: Define how models connect so the AI service can join them reliably instead of guessing.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+A relationship is an association between two models that describes how rows in
+one relate to rows in another. Relationships let NQRust Analytics join models and
+analyze connected data efficiently, and they provide the AI service with explicit
+join paths rather than requiring it to infer them.
+
+## Create a relationship
+
+### During the connection process
+
+When you connect a data source, you can define relationships between the selected
+tables as an optional step.
+
+### From the Modeling page
+
+<Steps>
+<Step>Open the diagram of the model you want to start from.</Step>
+<Step>Click the **+** icon next to the **Relationships** section.</Step>
+<Step>
+Define the relationship:
+
+- **From** — the left-side model and column.
+- **To** — the right-side model and column.
+- **Type** — Many-to-one, One-to-many, or One-to-one.
+</Step>
+<Step>Click **Save**.</Step>
+</Steps>
+
+<Screenshot src="/images/docs/modeling/relationship-dialog.png" caption="The relationship dialog with From and To model/column pickers and the relationship Type selector." />
+
+### Limitations
+
+Two cases are not supported when creating relationships:
+
+**Self-referential relationships.** A column in a model cannot point back to the
+same model. For example, an `Employee` model whose `reportsTo` column stores
+another `Employee` `ID` cannot be modeled directly. This means hierarchical or
+recursive structures within a single model are not supported.
+
+**Duplicate relationships.** You cannot create two relationships between the same
+pair of models using identical columns. If an `Order`–`Customer` relationship
+already uses `customerID`, you cannot add another one on the same `customerID`.
+This keeps each relationship unique and avoids ambiguity.
+
+## Update a relationship
+
+1. Click the **...** icon next to the relationship on the model diagram.
+2. Choose **Edit**.
+3. Change the relationship **Type**.
+
+## Delete a relationship
+
+1. Click the **...** icon next to the relationship on the model diagram.
+2. Choose **Delete**.
+
+## Inspect a relationship
+
+Hover over the line connecting two model diagrams to see details about that
+relationship.
+
+## Deploy your changes
+
+After editing on the Modeling page, click **Deploy** in the navbar to sync your
+changes to the Analytics Engine.
+
+<Callout type="info">
+When changes are pending, the navbar shows an `Undeployed changes` message. Once
+all changes are synced, it shows a `synced` message.
+</Callout>

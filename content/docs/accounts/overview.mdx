@@ -1,0 +1,71 @@
+---
+title: Accounts & Sign-in Overview
+description: How users sign in to NQRust Analytics — required authentication, the seeded default admin, email/password, and optional single sign-on.
+---
+
+NQRust Analytics **requires authentication**. Every visit to the web interface
+goes through a sign-in screen before any project, model, or dashboard is
+accessible. There is no anonymous or guest mode.
+
+Authentication is built on [NextAuth](https://next-auth.js.org/). The installer
+generates the secrets it needs (`JWT_SECRET` and `NEXTAUTH_SECRET`)
+automatically, so a fresh install is secured out of the box.
+
+## Ways to sign in
+
+| Method | Always available? | How it is enabled |
+| --- | --- | --- |
+| Email & password | Yes | Built in — no configuration required |
+| NQRust Identity (SSO) | Optional | Set the `KEYCLOAK_*` environment variables |
+
+Email and password sign-in is always present. Single sign-on through **NQRust
+Identity** can be added on top of it so users can sign in
+with a single click. When SSO is enabled, the login page shows a **Login with
+NQRust Identity** button above the email/password form.
+
+## The default administrator
+
+The database is seeded with one administrator account so you can sign in the
+very first time:
+
+| Field | Value |
+| --- | --- |
+| Email | `admin@localhost` |
+| Password | `admin123` |
+| Display name | `Administrator` |
+| Role | `admin` (full access) |
+
+<Callout type="warn">
+The default `admin@localhost` / `admin123` credentials are well known. Sign in
+and change the password immediately after your first install, before exposing
+the instance to anyone else.
+</Callout>
+
+## Who can create accounts
+
+Self-service registration is **disabled**. New users are created by an
+administrator from the User Management area — there is no public sign-up form.
+This keeps the instance closed by default: only users an admin has provisioned
+(or who arrive through SSO auto-registration) can sign in.
+
+## Sessions
+
+Sign-in establishes a JWT-based session that lasts **7 days**, stored in a
+session cookie. When it expires, users are returned to the login screen.
+
+## Next steps
+
+<Cards>
+  <Card title="Email & password" href="/docs/accounts/email-password">
+    Sign in, the default admin account, and how users are provisioned.
+  </Card>
+  <Card title="Single sign-on (SSO)" href="/docs/accounts/oauth">
+    Enable NQRust Identity single sign-on.
+  </Card>
+  <Card title="Roles & access control" href="/docs/access-control/overview">
+    Understand admin, editor, and viewer permissions.
+  </Card>
+  <Card title="Installation" href="/docs/get-started/installation">
+    Deploy the stack and generate authentication secrets.
+  </Card>
+</Cards>

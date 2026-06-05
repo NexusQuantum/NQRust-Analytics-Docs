@@ -1,0 +1,50 @@
+---
+title: Calculated Fields
+description: Add custom columns using spreadsheet-style expressions that compute values across your models.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+Calculated fields let you add custom columns computed from expressions, much like
+formulas in a spreadsheet such as Excel or Google Sheets. Define the logic once,
+and the column becomes available wherever the model is queried.
+
+For every function you can use, see the
+[Expression Reference](/docs/modeling/calculated-fields-list).
+
+## Create a calculated field
+
+<Steps>
+<Step>Open the diagram of the model you want to add the field to.</Step>
+<Step>Click the **+** icon next to the **Calculated Fields** section.</Step>
+<Step>Give the calculated field a name.</Step>
+<Step>Choose the function to use.</Step>
+<Step>
+Select the column the function applies to. Through relationships already defined
+on this model, you can also reference a column from a related model.
+</Step>
+<Step>Click **Save**.</Step>
+</Steps>
+
+<Screenshot src="/images/docs/modeling/add-calculated-field-form.png" caption="The add calculated field form: naming the field, picking a function, and selecting the column it applies to." />
+
+## Update a calculated field
+
+1. Click the **...** icon next to the calculated field on the model diagram.
+2. Choose **Edit**.
+3. Change the **Name** or **expression**.
+
+## Delete a calculated field
+
+1. Click the **...** icon next to the calculated field on the model diagram.
+2. Choose **Delete**.
+
+## Deploy your changes
+
+After editing on the Modeling page, click **Deploy** in the navbar to sync your
+changes to the Analytics Engine.
+
+<Callout type="info">
+When changes are pending, the navbar shows an `Undeployed changes` message. Once
+all changes are synced, it shows a `synced` message.
+</Callout>

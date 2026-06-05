@@ -1,0 +1,77 @@
+---
+title: Your Profile & Password
+description: View your account, update your display name, and change your password in NQRust Analytics.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+Every signed-in user has a profile page for managing their own account. Open it
+from **Settings → Profile**.
+
+## Your account
+
+The profile page shows your:
+
+- **Avatar** and **display name**
+- **Email** address (used to sign in)
+- **Role** — Admin, Editor, or Viewer (read-only here; only an administrator can
+  change a user's role from [User Management](/docs/access-control/managing-access))
+
+<Screenshot src="/images/docs/accounts/profile.png" caption="The Settings → Profile screen showing account details and the change-password section." />
+
+## Update your display name
+
+<Steps>
+
+<Step>
+
+### Edit the field
+
+On **Settings → Profile**, change the **Display name** field.
+
+</Step>
+
+<Step>
+
+### Save
+
+Save the form. Your new display name is applied immediately.
+
+</Step>
+
+</Steps>
+
+## Change your password
+
+<Steps>
+
+<Step>
+
+### Enter your current and new password
+
+In the **Change password** section, enter your **current password**, then your
+**new password**.
+
+</Step>
+
+<Step>
+
+### Save
+
+Submit the form. Your password is updated immediately; use the new password the
+next time you sign in.
+
+</Step>
+
+</Steps>
+
+<Callout type="info">
+  Changing your password requires your current password. If you have forgotten
+  it, contact an administrator, who can manage accounts from
+  [User Management](/docs/access-control/managing-access).
+</Callout>
+
+<Callout type="info">
+  If you signed in through single sign-on, your password is managed by your
+  identity provider. See [Single Sign-On](/docs/accounts/oauth).
+</Callout>

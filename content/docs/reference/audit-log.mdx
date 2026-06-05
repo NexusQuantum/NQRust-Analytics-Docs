@@ -1,0 +1,49 @@
+---
+title: Audit Log
+description: NQRust Analytics records an audit trail of security-sensitive actions for review and compliance.
+---
+
+NQRust Analytics keeps an **audit trail** of security-sensitive actions so you can
+review who did what, and when. Entries are written automatically; there is
+nothing to enable.
+
+## What is recorded
+
+Each audit entry captures:
+
+| Field | Description |
+| --- | --- |
+| **User** | The account that performed the action (may be empty for unauthenticated events). |
+| **Action** | What happened (for example, creating or deleting a user, changing a role, or a password change). |
+| **Resource type** | The kind of object affected — e.g. `user` or `role`. |
+| **Resource ID** | The specific object affected, when applicable. |
+| **Details** | Additional structured context about the action. |
+| **IP address** | The network address the request came from. |
+| **Timestamp** | When the action occurred. |
+
+The trail focuses on **account and access management** — authentication, user
+creation/updates/deletion, role changes, and password changes — the actions
+most relevant to security and compliance.
+
+## Where it is stored
+
+Audit entries are written to the `audit_log` table in the application's database.
+They are indexed by user, action, resource type, and time, so they can be
+filtered and queried efficiently.
+
+<Callout type="info">
+  This release records the audit trail to the database; there is no built-in
+  in-app viewer. Administrators can review entries by querying the `audit_log`
+  table directly (for example with `psql` or your preferred SQL client).
+</Callout>
+
+## Related
+
+<Cards>
+  <Card title="Roles & access" href="/docs/access-control/overview">
+    Who can perform the actions that get audited.
+  </Card>
+  <Card title="Security" href="/docs/reference/security">
+    How NQRust Analytics handles your data.
+  </Card>
+</Cards>

@@ -1,0 +1,70 @@
+---
+title: Keeping answers correct
+description: How NQRust Analytics reduces hallucinations on business data.
+---
+
+Wrong answers on business data are rarely a problem of the model being poor at SQL.
+They are usually a *missing-context* problem: the system writes a
+confident-looking query against data it does not actually understand.
+
+NQRust Analytics is designed to give the system the context it needs at every
+step, and to **fail loudly when it would otherwise guess**.
+
+## What each layer blocks
+
+### MDL: the system cannot name what is not modeled
+
+Raw warehouses are full of ambiguous joins and near-duplicate tables
+(`customers` vs `customers_v3` vs `loyalty_v3`). [MDL](/docs/concepts/what-is-mdl)
+collapses those into one canonical surface.
+
+If `email` is not in the `customers` model, the system cannot query it; it does not
+exist in the platform's view of your data. If the canonical join between `orders`
+and `customers` is declared once in MDL, the system does not have to invent it.
+
+### Targeted retrieval beats dumping the schema
+
+Two common failure modes:
+
+- **Dump the whole schema** into the prompt → the model gets confused by
+  irrelevant tables.
+- **Let the model guess** which tables are relevant → it picks the wrong one.
+
+Instead, the system indexes your MDL, instructions, and confirmed question–SQL
+pairs, and retrieves only the slice that matches the question — the `customers`
+and `orders` models and the approved revenue calculation, not 500 tables.
+
+### Validate before executing
+
+Before running anything, the system resolves the modeled query into the exact SQL
+that will run against the database. Invalid references fail at this stage with a clear
+error rather than silently returning a wrong number in production.
+
+### Self-correction
+
+If a generated query fails validation, the system attempts to repair it, up to a
+few retries, before surfacing an error, using the validation feedback to fix the
+problem instead of reporting a broken result.
+
+## The primitives behind reliable text-to-SQL
+
+Reliable answers depend on several primitives working together:
+
+- **Schema linking** — find the right models and columns for the question.
+- **Value profiling** — understand what values actually appear in the data.
+- **Ambiguity detection** — know when a question needs clarification.
+- **Generation trace** — show how the answer was built.
+- **Retry and repair** — recover when the first attempt fails.
+- **Evaluation** — detect regressions as definitions and schemas change.
+
+## Where context comes from
+
+The first version of context usually comes from the database. The system can
+generate MDL from tables, columns, types, and relationships so that you have a working
+structural and semantic layer quickly.
+
+The deeper context comes from elsewhere: analyst-written SQL, business
+glossaries, metric definitions, onboarding documentation, and past questions with accepted
+answers. For this reason, the workflow is to **generate the structure first, then enrich it**:
+begin with the structure, then incorporate the business meaning that makes answers
+trustworthy.

@@ -1,0 +1,76 @@
+---
+title: Good Practices
+description: Practical tips for tuning the Analytics Service for accuracy, latency, and cost.
+---
+
+These recommendations help you get the most out of NQRust Analytics once you
+have chosen a model. Apply all of them by editing `config.yaml`.
+
+<Callout type="info">
+After you change `config.yaml`, restart NQRust Analytics so the new settings
+take effect.
+</Callout>
+
+## Set up tracing first
+
+Before tuning anything, configure [Langfuse](/docs/ai-service/langfuse). Tracing
+lets you see exactly where time is spent and where answers go wrong, which makes
+every other adjustment on this page measurable rather than guesswork.
+
+## Start with the strongest model you can afford
+
+Begin with the most capable model your budget allows. This establishes the best
+quality you can realistically reach. If the results meet your needs, you can
+stop there. To save money or reduce latency, step down to a
+lighter model and compare; you will then know what you are trading away.
+
+## Control schema pruning
+
+When using a non-OpenAI model, the service may prune columns before generating
+SQL, which can occasionally drop tables or columns you wanted to keep. To skip
+pruning and pass the full schema instead, set:
+
+```yaml
+allow_using_db_schemas_without_pruning: true
+```
+
+This preserves all tables and columns and can improve latency, but it sends many
+more tokens to the model, so watch for the model's token limit on large
+schemas.
+
+## Reduce latency further
+
+If you need faster answers, you can disable some reasoning steps. These trade
+accuracy for speed, so disable them deliberately:
+
+```yaml
+allow_intent_classification: false
+allow_sql_generation_reasoning: false
+```
+
+- `allow_intent_classification: false` skips the intent-classification step.
+- `allow_sql_generation_reasoning: false` skips the SQL-generation reasoning
+  step.
+
+<Callout type="warn">
+Both of these can lower answer quality. Turn them off only if the latency
+improvement is worthwhile for your use case.
+</Callout>
+
+## Handle very wide schemas during indexing
+
+If a table has so many columns that indexing exceeds the model's token limit,
+lower the indexing batch size so columns are processed in smaller groups:
+
+```yaml
+column_indexing_batch_size: 50
+```
+
+## Adjust how many tables are retrieved
+
+By default the service retrieves the top 10 tables from the vector store when
+answering a question. If your workload needs more or fewer, change:
+
+```yaml
+table_retrieval_size: 10
+```

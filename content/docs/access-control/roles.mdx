@@ -1,0 +1,101 @@
+---
+title: Roles & Permissions
+description: The three built-in roles in NQRust Analytics and the exact permissions each one grants.
+---
+
+NQRust Analytics ships with three **system roles**: `admin`, `editor`, and
+`viewer`. This page lists the exact permissions each one grants, derived from
+the seeded role definitions.
+
+## Permission matrix
+
+Permissions are `resource:action` pairs. The table below shows which actions
+each role holds for each resource. A check means the role has that
+`resource:action` permission.
+
+### admin
+
+The `admin` role grants **every action on every resource** — there are no gaps.
+
+| Resource | read | write | delete | admin |
+| --- | :---: | :---: | :---: | :---: |
+| project | ✅ | ✅ | ✅ | ✅ |
+| model | ✅ | ✅ | ✅ | ✅ |
+| view | ✅ | ✅ | ✅ | ✅ |
+| thread | ✅ | ✅ | ✅ | ✅ |
+| dashboard | ✅ | ✅ | ✅ | ✅ |
+| user | ✅ | ✅ | ✅ | ✅ |
+| role | ✅ | ✅ | ✅ | ✅ |
+| sql_pair | ✅ | ✅ | ✅ | ✅ |
+| instruction | ✅ | ✅ | ✅ | ✅ |
+
+### editor
+
+The `editor` role grants **read and write** on the data and modeling resources.
+It has **no `delete` or `admin`** actions, and **no access to `user` or `role`**.
+
+| Resource | read | write | delete | admin |
+| --- | :---: | :---: | :---: | :---: |
+| project | ✅ | ✅ | — | — |
+| model | ✅ | ✅ | — | — |
+| view | ✅ | ✅ | — | — |
+| thread | ✅ | ✅ | — | — |
+| dashboard | ✅ | ✅ | — | — |
+| user | — | — | — | — |
+| role | — | — | — | — |
+| sql_pair | ✅ | ✅ | — | — |
+| instruction | ✅ | ✅ | — | — |
+
+### viewer
+
+The `viewer` role grants **read-only** access to projects and data. It has no
+write, delete, or admin actions, and no access to `user`, `role`, `sql_pair`, or
+`instruction`.
+
+| Resource | read | write | delete | admin |
+| --- | :---: | :---: | :---: | :---: |
+| project | ✅ | — | — | — |
+| model | ✅ | — | — | — |
+| view | ✅ | — | — | — |
+| thread | ✅ | — | — | — |
+| dashboard | ✅ | — | — | — |
+| user | — | — | — | — |
+| role | — | — | — | — |
+| sql_pair | — | — | — | — |
+| instruction | — | — | — | — |
+
+## Summary
+
+- **viewer** — can look at projects, models, views, query threads, and
+  dashboards, but cannot change anything.
+- **editor** — everything a viewer can do, plus creating and modifying models,
+  views, queries, threads, dashboards, SQL pairs, and instructions. An editor
+  cannot delete via the delete permission and cannot touch user or role
+  administration.
+- **admin** — full control of the instance, including managing users and roles
+  (`user:*` and `role:*`), which no other role has.
+
+## System roles
+
+All three roles are flagged as **system roles** in the database. The application
+blocks editing or deleting a system role: attempts to update or delete one are
+rejected ("Cannot modify system roles" / "Cannot delete system roles").
+Administrators can still create **additional custom roles** with their own
+permission sets alongside these built-ins.
+
+<Callout type="info">
+Permission names follow the format `resource:action`, e.g. `model:write`. The
+seed defines a permission for every resource × action combination, so custom
+roles can be assembled from any of them.
+</Callout>
+
+## Next steps
+
+<Cards>
+  <Card title="Managing access" href="/docs/access-control/managing-access">
+    Assign roles to users and manage project ownership.
+  </Card>
+  <Card title="Overview" href="/docs/access-control/overview">
+    How users, roles, and permissions fit together.
+  </Card>
+</Cards>

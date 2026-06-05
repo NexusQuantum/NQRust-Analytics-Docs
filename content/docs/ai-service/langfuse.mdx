@@ -1,0 +1,74 @@
+---
+title: Langfuse Setup
+description: Trace and monitor the Analytics Service's AI pipelines with Langfuse.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+Langfuse is an LLM engineering platform for monitoring, debugging, and
+optimizing AI pipelines. NQRust Analytics can send pipeline traces to Langfuse
+so you can see how each question is processed. Langfuse runs either self-hosted
+or in the cloud, and either option is supported here.
+
+## Before you start
+
+Make sure that:
+
+- A Langfuse instance is up and running.
+- The `langfuse_host` value in `config.yaml` points at that instance.
+- If NQRust Analytics runs in Docker, the container can reach the
+  Langfuse instance over the network.
+
+## Steps
+
+<Steps>
+
+<Step>
+### Create a Langfuse account or instance
+
+Sign up at Langfuse, or use your self-hosted deployment. If you are using
+Langfuse Cloud, note your data region: the EU region uses
+`https://cloud.langfuse.com` (the default) and the US region uses
+`https://us.cloud.langfuse.com`. Set `langfuse_host` accordingly.
+</Step>
+
+<Step>
+### Create an organization and project
+
+Inside Langfuse, create an organization and a project to hold your traces.
+</Step>
+
+<Step>
+### Copy your API keys into the environment
+
+Open your project's settings and copy the public and secret keys. Add them to
+the installer's environment file so the service can authenticate:
+
+```bash
+LANGFUSE_PUBLIC_KEY=your_public_key
+LANGFUSE_SECRET_KEY=your_secret_key
+```
+
+These variables are already present in the installer's environment template, so
+you only need to supply the values.
+</Step>
+
+<Step>
+### Restart NQRust Analytics
+
+Restart the service so it picks up the new keys and host.
+</Step>
+
+</Steps>
+
+## Viewing traces
+
+Once tracing is active, every question you ask in the Analytics UI produces a
+trace that appears in the Langfuse traces tab within a few seconds. Open a trace
+to examine each step of the pipeline — the prompts sent, the responses
+returned, and how long each stage took. This is the fastest way to understand
+the source of latency or incorrect answers.
+
+<Callout type="info">
+Screenshot coming soon.
+</Callout>

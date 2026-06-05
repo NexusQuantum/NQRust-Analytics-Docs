@@ -1,0 +1,83 @@
+---
+title: Connect Amazon Athena
+description: Connect Amazon Athena to NQRust Analytics.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<Callout type="warn">
+  Athena is supported only with the **Trino** query engine. The Apache Spark
+  engine is not supported.
+</Callout>
+
+<Screenshot src="/images/docs/connect/athena-form.png" caption="The Amazon Athena connection form in the Analytics UI" />
+
+## Prerequisites
+
+You need an AWS account with the **AmazonAthenaFullAccess** policy or an
+equivalent set of permissions that includes:
+
+- Running Athena queries
+- Full access to the S3 bucket that holds query results
+- Read access to AWS Glue Data Catalog metadata
+
+On the target databases, the account also needs:
+
+- `SELECT` on tables and views
+- `CREATE VIEW`
+- `DROP VIEW`
+
+NQRust Analytics creates temporary views with unique, system-generated names, so
+they will not conflict with your existing views.
+
+## Connection settings
+
+| Field | Description |
+| --- | --- |
+| Display name | The name this database shows up as in the Analytics UI. |
+| Database (schema) | The Athena database (also called schema) that contains the tables you want to query. |
+| S3 staging directory | The S3 path where Athena stores query results and metadata, e.g. `s3://bucket/path`. Find it in the Athena console under Settings > Query result location. |
+| AWS region | The region Athena runs in, e.g. `us-east-1`. |
+| AWS access key ID | Your access key ID. |
+| AWS secret access key | Your secret access key. |
+
+## Steps
+
+<Steps>
+
+<Step>
+### Enter connection details
+Select **Athena** in the connection dialog, fill in the connection settings
+above, and continue.
+</Step>
+
+<Step>
+### Select tables
+Choose the tables to use as data models.
+<Screenshot src="/images/docs/connect/select-tables.png" caption="Selecting the tables to import as data models" />
+</Step>
+
+<Step>
+### Define relationships
+Define how the tables relate, or skip this step. Then finish the connection.
+<Screenshot src="/images/docs/connect/define-relationships.png" caption="Defining relationships between the imported tables" />
+</Step>
+
+<Step>
+
+### Start exploring
+
+Your tables now appear on the **Modeling** page. Open the **Home** page and ask
+questions about your data in natural language.
+
+<Screenshot src="/images/docs/connect/start-exploring.png" caption="Asking a question about the connected data on the Home page" />
+
+</Step>
+
+</Steps>
+
+## Known issues
+
+- Complex queries can time out. Optimize them where possible.
+- Some data types may not be fully supported. Cast them to standard types if you
+  encounter issues.

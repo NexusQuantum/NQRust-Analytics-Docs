@@ -1,0 +1,29 @@
+---
+title: Deployment & Projects
+description: How projects and user access work in a self-hosted NQRust Analytics deployment.
+---
+
+NQRust Analytics is a self-hosted platform: there is no hosted organization,
+billing, or seat management to configure. Instead, your single deployment hosts
+everything you build.
+
+## One deployment, many projects
+
+A deployment hosts your projects. Each project pairs a data source with the
+model and conversation history built on top of it. You create projects, switch
+between them, and manage their settings directly in the Analytics UI. To create
+or move between projects, see [Manage Projects](/docs/manage/project).
+
+## User access
+
+Rather than organization members and seats, NQRust Analytics uses **user
+accounts** combined with **role-based access control (RBAC)**. Three roles are
+available:
+
+- **Admin** — full control over the deployment, projects, and settings.
+- **Editor** — can build models and ask questions, but not manage the deployment.
+- **Viewer** — read-only access to existing projects and results.
+
+Accounts and roles have their own dedicated section, so this page only points you
+in the right direction. To get your deployment running and create the first
+account, see [Installation](/docs/get-started/installation).

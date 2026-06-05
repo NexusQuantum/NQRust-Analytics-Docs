@@ -1,0 +1,78 @@
+---
+title: Connect PostgreSQL
+description: Connect a PostgreSQL database to NQRust Analytics.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+Connecting PostgreSQL to NQRust Analytics involves three stages: enter the
+connection settings, select the tables you want, and define how those tables
+relate to one another.
+
+<Screenshot src="/images/docs/connect/postgresql-form.png" caption="The PostgreSQL connection form in the Analytics UI" />
+
+## Required permissions
+
+The PostgreSQL account you connect with needs at least these privileges:
+
+- `SELECT` on the tables and views you plan to query
+- `CREATE TEMPORARY VIEW`
+- `DROP VIEW`
+
+NQRust Analytics creates temporary views during query execution. These views use
+unique, system-generated names, so they will not conflict with or overwrite
+anything already present in your database.
+
+## Connection settings
+
+| Field | Description |
+| --- | --- |
+| Display name | (required) The name this database shows up as in the Analytics UI. |
+| Host | (required) The PostgreSQL server's IP address or hostname, e.g. `10.1.1.1`. |
+| Port | (required) The port the server listens on, e.g. `5432`. |
+| Username | (required) The database account used to authenticate. |
+| Password | (required) That account's password. |
+| Database name | (required) The specific database to connect to. |
+| Use SSL | (optional) Toggle SSL on for the connection. Off by default. |
+
+<Callout type="info">
+  Running PostgreSQL locally on macOS or Windows? Use `host.docker.internal` as
+  the host so the container can reach your machine.
+</Callout>
+
+## Steps
+
+<Steps>
+
+<Step>
+### Enter connection details
+Complete the fields above and click **Next**. NQRust Analytics validates the
+connection.
+</Step>
+
+<Step>
+### Select tables
+Choose which tables to import. Each table you select becomes a data model.
+<Screenshot src="/images/docs/connect/select-tables.png" caption="Selecting the tables to import as data models" />
+</Step>
+
+<Step>
+### Define relationships
+Connect your tables by setting a **From** column, a **To** column, and a
+relationship type. NQRust Analytics suggests relationships from existing primary
+and foreign keys. You can add your own or skip this step for now.
+<Screenshot src="/images/docs/connect/define-relationships.png" caption="Defining relationships between the imported tables" />
+</Step>
+
+<Step>
+
+### Start exploring
+
+Your tables now appear on the **Modeling** page. Open the **Home** page and ask
+questions about your data in natural language.
+
+<Screenshot src="/images/docs/connect/start-exploring.png" caption="Asking a question about the connected data on the Home page" />
+
+</Step>
+
+</Steps>

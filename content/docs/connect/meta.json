@@ -1,0 +1,17 @@
+{
+  "title": "Connect Data Sources",
+  "pages": [
+    "overview",
+    "postgresql",
+    "mysql",
+    "sqlserver",
+    "oracle",
+    "bigquery",
+    "snowflake",
+    "redshift",
+    "athena",
+    "duckdb",
+    "clickhouse",
+    "trino"
+  ]
+}

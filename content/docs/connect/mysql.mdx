@@ -1,0 +1,74 @@
+---
+title: Connect MySQL
+description: Connect a MySQL database to NQRust Analytics.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+Connecting MySQL to NQRust Analytics involves three stages: provide the
+connection settings, select your tables, and define their relationships.
+
+<Screenshot src="/images/docs/connect/mysql-form.png" caption="The MySQL connection form in the Analytics UI" />
+
+<Callout type="warn">
+  Only MySQL 8.0 and later is supported.
+</Callout>
+
+## Connection settings
+
+| Field | Description |
+| --- | --- |
+| Display name | (required) The name this database shows up as in the Analytics UI. |
+| Host | (required) The MySQL server's IP address or hostname, e.g. `10.1.1.1`. |
+| Port | (required) The port the server listens on, e.g. `3306`. |
+| Username | (required) The database account used to authenticate. |
+| Password | (optional) That account's password. |
+| Database name | (required) The specific database to connect to. |
+| Use SSL | (optional) Toggle SSL on for the connection. Off by default. |
+
+<Callout type="info">
+  Running MySQL locally on macOS or Windows? Use `host.docker.internal` as the
+  host so the container can reach your machine.
+</Callout>
+
+## Steps
+
+<Steps>
+
+<Step>
+### Enter connection details
+Complete the fields above and click **Next**.
+</Step>
+
+<Step>
+### Select tables
+Choose which tables from your MySQL database to import. Each selected table
+becomes a data model.
+<Screenshot src="/images/docs/connect/select-tables.png" caption="Selecting the tables to import as data models" />
+</Step>
+
+<Step>
+### Define relationships
+Link tables together by specifying:
+
+- **From** — the source table and column
+- **To** — the target table and column
+- **Relationship type** — the kind of relationship between them
+
+NQRust Analytics proposes relationships based on your primary and foreign keys.
+You can add relationships manually or skip the step entirely.
+<Screenshot src="/images/docs/connect/define-relationships.png" caption="Defining relationships between the imported tables" />
+</Step>
+
+<Step>
+
+### Start exploring
+
+Your tables now appear on the **Modeling** page. Open the **Home** page and ask
+questions about your data in natural language.
+
+<Screenshot src="/images/docs/connect/start-exploring.png" caption="Asking a question about the connected data on the Home page" />
+
+</Step>
+
+</Steps>

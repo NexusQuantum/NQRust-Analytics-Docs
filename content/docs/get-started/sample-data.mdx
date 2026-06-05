@@ -1,0 +1,108 @@
+---
+title: Demo Data (Northwind)
+description: Explore NQRust Analytics immediately with the bundled Northwind sample database.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+To support evaluation of NQRust Analytics before connecting your own database,
+the installer includes a **Northwind** demo database — the classic
+trading-company dataset. It is a small, realistic schema you can query
+immediately to learn how asking, modeling, and charts work.
+
+## What Northwind contains
+
+Northwind models a sample wholesale business, with related tables such as:
+
+- **Customers** and **Orders** (with order line items)
+- **Products**, **Categories**, and **Suppliers**
+- **Employees** and **Shippers**
+
+This mix of entities and relationships is sufficient to practice realistic
+questions such as "top products by revenue" or "orders per customer this year."
+
+## Before you begin
+
+Install and start NQRust Analytics with the [Installation guide](/docs/get-started/installation),
+then open the Analytics UI at `http://<server-host>:3000` (using your server's IP
+address or hostname). The Northwind database runs alongside the app as the bundled
+`northwind-db` service.
+
+## Connect to the demo database
+
+<Steps>
+
+<Step>
+
+### Add a PostgreSQL data source
+
+On the setup screen, select **PostgreSQL** and enter the bundled Northwind
+connection details:
+
+| Field | Value |
+| --- | --- |
+| Display name | `northwind_demo` |
+| Host | `northwind-db` |
+| Port | `5435` |
+| Username | `demo` |
+| Password | `demo123` |
+| Database name | `northwind` |
+| Use SSL | Off |
+
+Select **Next**. For more about each field, see
+[Connect PostgreSQL](/docs/connect/postgresql).
+
+<Screenshot src="/images/docs/sample-data/northwind-connection.png" caption="The PostgreSQL form filled in for the bundled northwind-db service" />
+
+</Step>
+
+<Step>
+
+### Select tables
+
+Select the Northwind tables you want to import. Each table you select becomes a
+data model.
+
+<Screenshot src="/images/docs/connect/select-tables.png" caption="Selecting the tables to import as data models" />
+
+</Step>
+
+<Step>
+
+### Define relationships
+
+Confirm how the Northwind tables relate to one another. NQRust Analytics suggests
+relationships from existing primary and foreign keys; you can adjust them or skip
+this step for now.
+
+<Screenshot src="/images/docs/connect/define-relationships.png" caption="Defining relationships between the imported tables" />
+
+</Step>
+
+<Step>
+
+### Start exploring
+
+Once the project is ready, ask questions on the **Home** page and inspect tables
+and relationships on the **Modeling** page.
+
+<Screenshot src="/images/docs/connect/start-exploring.png" caption="Asking a question about the connected data on the Home page" />
+
+</Step>
+
+</Steps>
+
+## Verify the setup
+
+Confirm the following:
+
+- the project opens successfully
+- you can ask a question from the **Home** page
+- you can see tables and relationships on the **Modeling** page
+
+## Next steps
+
+<Cards>
+  <Card title="Connect your data" href="/docs/get-started/connect-your-data">Proceed to your own database.</Card>
+  <Card title="Ask a question" href="/docs/asking/ask">Start querying in natural language.</Card>
+</Cards>

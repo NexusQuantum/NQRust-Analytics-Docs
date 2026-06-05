@@ -1,0 +1,70 @@
+---
+title: How it works
+description: The three services behind NQRust Analytics and what happens when you ask a question.
+---
+
+NQRust Analytics combines a product UI, an AI service, and a context/modeling
+layer so that you can ask business questions without working directly against raw
+database schemas.
+
+## The three core services
+
+### Analytics UI
+
+The user-facing application. This is where you:
+
+- connect data sources
+- define models and relationships
+- ask questions
+- review answers, charts, and saved results
+- manage users, roles, and dashboards
+
+### Analytics Service
+
+The AI service handles retrieval, prompting, SQL generation, and result
+validation. Rather than sending a raw prompt directly to an LLM, it converts a user
+question into a grounded query workflow, retrieving the relevant business context
+first.
+
+### Analytics Engine
+
+The engine provides the context and modeling foundation. It manages metadata,
+business definitions, and SQL translation so the system works from
+business-aware context rather than schema alone. A companion **Ibis Server**
+handles the Python data-transformation layer.
+
+## What happens when you ask a question
+
+At a high level, the flow proceeds as follows:
+
+1. You ask a question in the Analytics UI.
+2. The Analytics Service retrieves the most relevant business context for that
+   question.
+3. The Analytics Service uses that context to generate SQL.
+4. The Analytics Engine validates and executes the query against the connected
+   data source.
+5. The Analytics UI shows the answer, a result preview, and any related chart or
+   follow-up questions.
+
+## Why the system is split this way
+
+Keeping these responsibilities separate keeps each part focused:
+
+- **Analytics UI** focuses on user workflow and interaction.
+- **Analytics Service** focuses on retrieval and generation.
+- **Analytics Engine** focuses on context, modeling, and execution.
+
+That separation makes it easier to improve one part without forcing the UI, the
+AI workflow, and the business-context layer into a single tightly coupled
+service.
+
+## Learn more
+
+<Cards>
+  <Card title="What is context?" href="/docs/concepts/what-is-context">
+    Why a schema alone is not enough for reliable answers.
+  </Card>
+  <Card title="What is MDL?" href="/docs/concepts/what-is-mdl">
+    The semantic contract at the center of the platform.
+  </Card>
+</Cards>

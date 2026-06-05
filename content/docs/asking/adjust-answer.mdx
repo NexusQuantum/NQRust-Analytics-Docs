@@ -1,0 +1,50 @@
+---
+title: Adjust Answers
+description: Refine an answer by editing its reasoning steps or by changing the generated SQL directly.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+When NQRust Analytics returns an answer, you can refine it in two ways: by editing the reasoning steps it used, or by editing the generated SQL directly.
+
+## Modify reasoning steps
+
+The reasoning steps are the stages NQRust Analytics worked through to build the answer. They appear in the **Answer preparation steps** section.
+
+To change them, click **Adjust the answer** and choose **Adjust steps** from the dropdown.
+
+<Screenshot src="/images/docs/asking/adjust-answer-dropdown.png" caption="The Adjust the answer dropdown open, showing the Adjust steps and Adjust SQL options" />
+
+You can edit both the reasoning steps and the selected models (which are retrieved through similarity search) to steer NQRust Analytics toward a more accurate, relevant answer. Switch to **Read mode** at any point to preview how the rendered answer will appear.
+
+When you finish editing, click **Regenerate answer** to obtain the updated result.
+
+## Edit SQL directly
+
+If you are familiar with SQL, you can adjust the generated query yourself:
+
+<Steps>
+<Step>
+Click **Adjust the answer** and choose **Adjust SQL**. You can also open the **View SQL** tab and click **Adjust SQL** straight from the SQL editor.
+</Step>
+<Step>
+A popup with a SQL editor appears.
+
+<Screenshot src="/images/docs/asking/adjust-sql-editor.png" caption="The Adjust SQL popup with the SQL editor showing the editable generated query" />
+</Step>
+<Step>
+Make the required changes to the query.
+</Step>
+<Step>
+Click **Submit** to regenerate the answer using your modified SQL.
+</Step>
+</Steps>
+
+<Callout type="info">
+Submitting edited SQL regenerates a new answer based on your changes.
+</Callout>
+
+<Cards>
+  <Card title="Know your answers" href="/docs/asking/answer" />
+  <Card title="What is NQRust SQL?" href="/docs/asking/sql" />
+</Cards>

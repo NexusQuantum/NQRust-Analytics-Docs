@@ -1,0 +1,78 @@
+---
+title: Connect Oracle
+description: Connect an Oracle Database to NQRust Analytics.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<Callout type="warn">
+  Only Oracle Database 23ai and later is supported. Check your version before
+  connecting.
+</Callout>
+
+<Screenshot src="/images/docs/connect/oracle-form.png" caption="The Oracle connection form in the Analytics UI" />
+
+## Required permissions
+
+The Oracle account you connect with needs these privileges:
+
+- `SELECT` on the tables and views you query
+- `CREATE VIEW`
+- `DROP VIEW`
+
+These privileges allow NQRust Analytics to create temporary views during query
+execution. The views always use unique, system-generated names, so they will not
+conflict with or overwrite your existing views.
+
+## Connection settings
+
+| Field | Description |
+| --- | --- |
+| Display name | (required) The name this database shows up as in the Analytics UI. |
+| Host | (optional) The Oracle database's IP address or hostname, e.g. `10.1.1.1`. |
+| Port | (optional) The database port, e.g. `1521`. |
+| Username | (required) The account used to access the database. |
+| Password | (required) That account's password. |
+| Database name | (optional) The service name or SID to connect to. |
+| DSN | (optional) A full Oracle connect descriptor, e.g. `(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=host)(PORT=port))(CONNECT_DATA=(SERVICE_NAME=service)))`. |
+
+<Callout type="info">
+  Running Oracle locally on macOS or Windows? Use `host.docker.internal` as the
+  host so the container can reach your machine.
+</Callout>
+
+## Steps
+
+<Steps>
+
+<Step>
+### Enter connection details
+Select Oracle from the data source options, then connect either by filling in
+the **Host**, **Port**, and **Database name**, **or** by providing a **DSN**.
+Click **Next** to test the connection.
+</Step>
+
+<Step>
+### Select tables
+Choose the tables you want from the list. Each table becomes a data model.
+<Screenshot src="/images/docs/connect/select-tables.png" caption="Selecting the tables to import as data models" />
+</Step>
+
+<Step>
+### Define relationships
+Define how your tables relate, or skip this step and configure it later.
+<Screenshot src="/images/docs/connect/define-relationships.png" caption="Defining relationships between the imported tables" />
+</Step>
+
+<Step>
+
+### Start exploring
+
+Your tables now appear on the **Modeling** page. Open the **Home** page and ask
+questions about your data in natural language.
+
+<Screenshot src="/images/docs/connect/start-exploring.png" caption="Asking a question about the connected data on the Home page" />
+
+</Step>
+
+</Steps>

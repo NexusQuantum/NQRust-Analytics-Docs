@@ -1,0 +1,25 @@
+{
+  "pages": [
+    "index",
+    "---Get Started---",
+    "get-started",
+    "---Concepts---",
+    "concepts",
+    "---Users & Access---",
+    "accounts",
+    "access-control",
+    "collaboration",
+    "---Working with Data---",
+    "connect",
+    "modeling",
+    "knowledge",
+    "---Analyze---",
+    "asking",
+    "documents",
+    "---Configuration---",
+    "ai-service",
+    "manage",
+    "---Reference---",
+    "reference"
+  ]
+}

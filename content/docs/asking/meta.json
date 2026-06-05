@@ -1,0 +1,12 @@
+{
+  "title": "Asking & Answers",
+  "pages": [
+    "ask",
+    "answer",
+    "adjust-answer",
+    "chart",
+    "dashboard",
+    "dashboard-cache",
+    "sql"
+  ]
+}

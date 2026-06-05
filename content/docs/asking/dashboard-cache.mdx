@@ -1,0 +1,53 @@
+---
+title: Dashboard Cache
+description: Cache dashboard query results to speed up loading for complex queries and large datasets.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+Dashboard caching stores the results of your dashboard queries to improve performance. It is particularly useful for dashboards built on complex queries or large datasets.
+
+<Callout type="info">
+Dashboard caching is disabled for DuckDB data sources, but available for the other supported sources.
+</Callout>
+
+## Enabling dashboard cache
+
+<Steps>
+<Step>
+Click the more icon (⋮) in the top-right corner of your dashboard.
+</Step>
+<Step>
+Choose **Cache Settings** from the dropdown.
+</Step>
+<Step>
+In the cache settings drawer, turn on **Enable Cache**.
+
+<Screenshot src="/images/docs/asking/dashboard-cache-settings.png" caption="The cache settings drawer with Enable Cache turned on and the refresh schedule options" />
+</Step>
+<Step>
+Select a refresh schedule: daily, weekly, a custom schedule, or manual refresh only.
+</Step>
+</Steps>
+
+## Manual cache refresh
+
+You can refresh the cache manually in two places.
+
+### For an individual chart
+
+1. Click the more icon (⋮) in the top-right corner of the chart.
+2. Choose **Refresh Cache**.
+
+### For the entire dashboard
+
+1. Click the more icon (⋮) in the top-right corner of the dashboard.
+2. Choose **Refresh All Caches**.
+
+## Monitoring cache status
+
+To check whether a chart is serving cached data and when it was last updated, review the bottom of the chart. A **Last Refreshed** timestamp indicates that the chart is using cached data, and shows when that cache was last built.
+
+<Cards>
+  <Card title="Dashboard" href="/docs/asking/dashboard" />
+</Cards>

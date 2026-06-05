@@ -1,0 +1,42 @@
+---
+title: Schema Changes
+description: Detect and resolve changes in your data source so your models stay in sync.
+---
+
+When you connect a data source, NQRust Analytics imports its schema: tables,
+columns, and relationships. Over time, the source schema can drift. This page
+explains how to detect those changes and bring your models back in sync.
+
+## Detecting schema changes
+
+Schema changes are detected when you click the **Refresh** icon in the sidebar.
+This compares your current data models against the live source schema. If any
+differences are found, a **warning sign** appears in the sidebar. Click it to view
+the details.
+
+## Types of changes
+
+The Schema Changes page groups detected changes into three categories. Each can
+be expanded to reveal the models, relationships, and calculated fields that
+depend on the affected object.
+
+<Screenshot src="/images/docs/modeling/schema-changes-page.png" caption="The Schema Changes page listing detected changes grouped by category, each with a Resolve action." />
+
+- **Source table deleted** — a table was removed from the data source, affecting
+  the models built on it.
+- **Source column deleted** — a column was removed, affecting the models that use
+  it.
+- **Source column type changed** — a column's data type changed in the source,
+  affecting the models that reference it.
+
+## Resolving schema changes
+
+Click the **Resolve** button next to a detected change.
+
+For **deleted tables** and **deleted columns**, NQRust Analytics automatically
+removes all affected models, relationships, and calculated fields and shows a
+success notification.
+
+For a **changed column type**, automatic resolution is not available. Reselect the
+modified column through the model's **Update Columns** option, then redefine any
+affected relationships and calculated fields as needed.

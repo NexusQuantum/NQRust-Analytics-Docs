@@ -1,0 +1,39 @@
+---
+title: Expression Reference
+description: Every function available when building a calculated field, grouped by category.
+---
+
+This page lists the expressions available when building a
+[calculated field](/docs/modeling/calculated-fields). Each function is listed
+with its syntax, return type, and behavior.
+
+## Aggregations
+
+| Function | Syntax | Returns | Description |
+| --- | --- | --- | --- |
+| Average | `avg(column)` | double | Returns the average of the values in the column. |
+| Count | `count(column)` | bigint | Returns the number of non-null rows in the selected data. |
+| Max | `max(column)` | same as input | Returns the largest value in the column. |
+| Min | `min(column)` | same as input | Returns the smallest value in the column. |
+| Sum | `sum(column)` | same as input | Adds up all values in the column. |
+
+## Math functions
+
+| Function | Syntax | Returns | Description |
+| --- | --- | --- | --- |
+| Absolute | `abs(column)` | same as input | Returns the absolute (positive) value of the column. |
+| Cube root | `cbrt(column)` | double | Returns the cube root of the number. |
+| Ceil | `ceil(column)` | same as input | Rounds a decimal up to the next integer. |
+| Exponential | `exp(column)` | double | Returns Euler's number, e, raised to the power of the value. |
+| Floor | `floor(column)` | same as input | Rounds a decimal down to the previous integer. |
+| Ln | `ln(column)` | double | Returns the natural logarithm of the number. |
+| Log10 | `log10(column)` | double | Returns the base-10 logarithm of the number. |
+| Round | `round(column)` | same as input | Rounds the decimal to the nearest integer. |
+| Signum | `sign(column)` | same as input | Returns the signum (sign) of the number. |
+
+## String functions
+
+| Function | Syntax | Returns | Description |
+| --- | --- | --- | --- |
+| Length | `length(column)` | bigint | Returns the number of characters in the string. |
+| Reverse | `reverse(column)` | varbinary | Returns the string with its characters in reverse order. |

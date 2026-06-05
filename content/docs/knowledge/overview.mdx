@@ -1,0 +1,64 @@
+---
+title: Knowledge Overview
+description: Store verified context so NQRust Analytics generates more accurate, consistent SQL.
+---
+
+Knowledge is where you capture trusted, reviewed context that guides how NQRust
+Analytics writes SQL. By recording the way your organization defines metrics and
+the rules your queries should follow, you give the system reliable ground truth
+to draw on rather than leaving it to guess. It is most valuable for
+domain-specific logic and for questions your team asks repeatedly.
+
+NQRust Analytics supports two kinds of knowledge.
+
+## Question–SQL pairs
+
+A question–SQL pair links a natural-language question to a verified SQL query.
+Once a pair is saved, future questions that resemble it can reuse that proven SQL
+as a reference, which keeps answers accurate and consistent over time.
+
+Use question–SQL pairs when:
+
+- A metric must be calculated with a precise, agreed-upon methodology.
+- Business logic is complex enough that the exact SQL formulation matters.
+- The same business questions come up regularly with an established answer.
+- A KPI is specific to your organization and not obvious from the schema alone.
+- A query is error-prone because it joins across many tables.
+
+For example, if your team computes "customer lifetime value" using a particular
+method, you can store the question "What is our average customer lifetime value?"
+alongside the SQL that calculates it correctly.
+
+Learn more in [Question–SQL pairs](/docs/knowledge/question-sql-pairs).
+
+## Instructions
+
+Instructions are guidelines that shape how SQL is generated. They take two
+forms:
+
+- **Global instructions** apply to every query and express general rules about
+  your data model and business.
+- **Question-matching instructions** apply only when a question fits a pattern or
+  topic you define.
+
+Instructions help the system understand your data model and business context up
+front, so it produces correct SQL with less back-and-forth refinement.
+
+Learn more in [Instructions](/docs/knowledge/instructions).
+
+## Why knowledge matters
+
+- **Consistency** — similar questions resolve to your verified SQL, so different
+  users get the same reliable answer.
+- **Accuracy** — pre-verified SQL reduces mistakes on complex queries.
+- **Domain expertise** — your organization's calculation methods and rules are
+  captured and reused.
+
+Knowledge is one of the layers that turns a schema into real understanding of
+your business. See [What is context?](/docs/concepts/what-is-context) for how the
+pieces fit together.
+
+<Cards>
+  <Card title="Instructions" href="/docs/knowledge/instructions" description="Define global and question-matching rules for SQL generation." />
+  <Card title="Question–SQL pairs" href="/docs/knowledge/question-sql-pairs" description="Map natural-language questions to verified SQL." />
+</Cards>

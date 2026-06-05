@@ -1,0 +1,74 @@
+---
+title: Roles & Access Control Overview
+description: How role-based access control works in NQRust Analytics — users get roles, roles grant permissions, and the three built-in roles.
+---
+
+NQRust Analytics adds **role-based access control (RBAC)** on top of its required
+sign-in. Access is determined by a straightforward chain:
+
+**User → Role(s) → Permissions**
+
+A user is assigned one or more **roles**. Each role grants a set of
+**permissions**. Every permission is written as `resource:action` — for example
+`model:write` or `dashboard:read`.
+
+## Permissions: resource × action
+
+A permission pairs a **resource** with an **action**:
+
+- **Resources:** `project`, `model`, `view`, `thread`, `dashboard`, `user`,
+  `role`, `sql_pair`, `instruction`
+- **Actions:** `read`, `write`, `delete`, `admin`
+
+The full set of permissions is the combination of every resource with every
+action (for example `user:admin`, `sql_pair:write`, `thread:read`). Roles are
+built by granting a subset of these permissions.
+
+## The three built-in roles
+
+NQRust Analytics seeds three **system roles** out of the box:
+
+| Role | What it can do |
+| --- | --- |
+| **admin** | Full system access — every resource and every action, including managing users and roles. |
+| **editor** | Read and write models, views, queries, threads, dashboards, SQL pairs, and instructions. Cannot delete, and cannot manage users or roles. |
+| **viewer** | Read-only access to projects, models, views, threads, and dashboards. |
+
+The seeded `admin@localhost` account is assigned the **admin** role, so the
+first user to sign in can manage everything. See
+[Accounts & Sign-in](/docs/accounts/overview) for the default credentials.
+
+<Callout type="info">
+These three roles are marked as **system roles** in the database. System roles
+cannot be edited or deleted through the application — see
+[Roles](/docs/access-control/roles).
+</Callout>
+
+## Two layers of access
+
+There are two distinct concepts that both use the word "role":
+
+1. **Global roles** (`admin` / `editor` / `viewer`) — assigned to a user and
+   granting `resource:action` permissions across the instance.
+2. **Project membership** (`owner` / `editor` / `viewer`) — a per-project role
+   stored separately. Project ownership is independent of a user's global role.
+
+[Managing access](/docs/access-control/managing-access) covers both layers and
+who is permitted to change them.
+
+## Next steps
+
+<Cards>
+  <Card title="Roles & permissions" href="/docs/access-control/roles">
+    The full permission matrix for admin, editor, and viewer.
+  </Card>
+  <Card title="Managing access" href="/docs/access-control/managing-access">
+    Assign roles to users and understand project ownership.
+  </Card>
+  <Card title="Accounts & sign-in" href="/docs/accounts/overview">
+    How users authenticate and the default admin account.
+  </Card>
+  <Card title="Collaboration" href="/docs/collaboration/overview">
+    Sharing projects, threads, and dashboards with others.
+  </Card>
+</Cards>

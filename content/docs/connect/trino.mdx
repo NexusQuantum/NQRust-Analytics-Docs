@@ -1,0 +1,71 @@
+---
+title: Connect Trino
+description: Connect Trino or Starburst to NQRust Analytics.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+Connecting Trino (or Starburst) to NQRust Analytics involves a few steps: enter
+the connection settings, optionally import details from Starburst, select your
+tables, and define relationships.
+
+<Screenshot src="/images/docs/connect/trino-form.png" caption="The Trino connection form in the Analytics UI" />
+
+## Connection settings
+
+| Field | Description |
+| --- | --- |
+| Display name | (required) The name this database shows up as in the Analytics UI. |
+| Host | (required) The Trino server's IP address or hostname, e.g. `10.1.1.1`. |
+| Port | (required) The port the server listens on. |
+| Schemas | (required) A comma-separated list of catalogs and schemas to expose, written in `catalog.schema` form, e.g. `catalog.schema1, catalog.schema2`. |
+| Username | (required) The account used to authenticate. |
+| Password | (required) That account's password. |
+| Use SSL | (optional) Toggle SSL on for the connection. Off by default. |
+
+<Callout type="info">
+  Running Trino locally on macOS or Windows? Use `host.docker.internal` as the
+  host so the container can reach your machine.
+</Callout>
+
+## Connecting to Starburst
+
+For a managed Starburst instance, open **Partner Connect** in the sidebar and
+choose **Ibis** — NQRust Analytics uses Ibis for its Trino connection. Copy the
+connection details Starburst provides and enter them into the form above.
+
+## Steps
+
+<Steps>
+
+<Step>
+### Enter connection details
+Complete the settings above and continue.
+</Step>
+
+<Step>
+### Select tables
+Every table in the connected Trino source is listed. Choose the ones you want as
+data models.
+<Screenshot src="/images/docs/connect/select-tables.png" caption="Selecting the tables to import as data models" />
+</Step>
+
+<Step>
+### Define relationships
+Define relationships between your tables by choosing **From** and **To** columns
+and a relationship type. You can skip this step and configure it later.
+<Screenshot src="/images/docs/connect/define-relationships.png" caption="Defining relationships between the imported tables" />
+</Step>
+
+<Step>
+
+### Start exploring
+
+Your tables now appear on the **Modeling** page. Open the **Home** page and ask
+questions about your data in natural language.
+
+<Screenshot src="/images/docs/connect/start-exploring.png" caption="Asking a question about the connected data on the Home page" />
+
+</Step>
+
+</Steps>

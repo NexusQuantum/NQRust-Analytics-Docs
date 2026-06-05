@@ -1,0 +1,92 @@
+---
+title: Connect Your Data
+description: Connect NQRust Analytics to your own data source.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+To move beyond the bundled samples, connect NQRust Analytics to your own database or files. This page covers the first-run flow: opening the UI, signing in, and attaching a data source.
+
+## Before you begin
+
+Confirm that NQRust Analytics is installed and running. If it is not, follow the [Installation guide](/docs/get-started/installation) first.
+
+## Steps
+
+<Steps>
+
+<Step>
+
+### Open the Analytics UI
+
+In your browser, open the following — replacing `<server-host>` with your server's
+IP address or hostname — then sign in:
+
+```
+http://<server-host>:3000
+```
+
+</Step>
+
+<Step>
+
+### Choose a data source
+
+From the project setup screen, select **Connect a data source**, then choose the
+type that matches your data:
+
+PostgreSQL, MySQL, BigQuery, Redshift, Snowflake, SQL Server, Oracle, DuckDB,
+ClickHouse, Athena (Trino), and Trino.
+
+Enter the connection details (host, port, database name, credentials, and any
+source-specific options). For the exact fields each source requires, see the
+[data source overview](/docs/connect/overview).
+
+<Screenshot src="/images/docs/connect-your-data/data-source-picker.png" caption="Choosing a data source type on the project setup screen" />
+
+</Step>
+
+<Step>
+
+### Select tables
+
+After the connection is validated, select the tables you want to import. Each
+table you select becomes a data model.
+
+<Screenshot src="/images/docs/connect/select-tables.png" caption="Selecting the tables to import as data models" />
+
+</Step>
+
+<Step>
+
+### Define relationships
+
+Declare how the tables relate to one another — for example, a customer having many
+orders — by setting a **From** column, a **To** column, and a relationship type.
+Clear relationships help the platform generate more accurate queries. You can skip
+this step and define relationships later.
+
+<Screenshot src="/images/docs/connect/define-relationships.png" caption="Defining relationships between the imported tables" />
+
+</Step>
+
+<Step>
+
+### Start exploring
+
+Your tables now appear on the **Modeling** page. Open the **Home** page and ask
+questions about your data in natural language.
+
+<Screenshot src="/images/docs/connect/start-exploring.png" caption="Asking a question about the connected data on the Home page" />
+
+</Step>
+
+</Steps>
+
+## Next steps
+
+<Cards>
+  <Card title="Data source overview" href="/docs/connect/overview">See every supported connector and its settings.</Card>
+  <Card title="Modeling overview" href="/docs/modeling/overview">Add descriptions and semantics to your tables.</Card>
+  <Card title="Quickstart" href="/docs/get-started/quickstart">Recap the end-to-end flow.</Card>
+</Cards>

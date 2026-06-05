@@ -1,0 +1,70 @@
+---
+title: Connect Files with DuckDB
+description: Query CSV, JSON, and Parquet files in NQRust Analytics using DuckDB.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+NQRust Analytics can query files through DuckDB, allowing you to work with CSV,
+JSON, and Parquet data without first loading it into a separate database.
+
+<Screenshot src="/images/docs/connect/duckdb-form.png" caption="The DuckDB file connection form in the Analytics UI" />
+
+## Supported formats and types
+
+**File formats:** CSV, JSON, and Parquet.
+
+**Data types:** the standard scalar types (`BIGINT`, `INTEGER`, `VARCHAR`, `DATE`,
+`TIMESTAMP`, `BOOLEAN`, `DECIMAL`, `DOUBLE`, and more), plus `ARRAY` variants for
+nested data.
+
+## Connection settings
+
+| Field | Description |
+| --- | --- |
+| Display name | (required) The name this source shows up as in the Analytics UI, e.g. `DuckDB`. |
+| Initial SQL statements | (required) SQL executed once at initialization, e.g. `CREATE TABLE new_tbl AS SELECT * FROM read_csv('input.csv');`. |
+| Configuration options | (optional) Key/value DuckDB configuration options. |
+| Extensions | (optional) DuckDB extensions to load. |
+
+<Callout type="info">
+  You can read files from either a local path or a cloud storage URL such as an
+  AWS S3 bucket.
+</Callout>
+
+## Steps
+
+<Steps>
+
+<Step>
+### Configure the connection
+Complete the fields above — most importantly the **Initial SQL statements**,
+which run once at initialization to load your files — and continue.
+</Step>
+
+<Step>
+### Select tables
+Every table discovered from your SQL is listed. Choose the ones you want as data
+models.
+<Screenshot src="/images/docs/connect/select-tables.png" caption="Selecting the tables to import as data models" />
+</Step>
+
+<Step>
+### Define relationships
+Connect your tables by setting a source table and column, a target table and
+column, and a relationship type. You can skip this step to finish the connection.
+<Screenshot src="/images/docs/connect/define-relationships.png" caption="Defining relationships between the imported tables" />
+</Step>
+
+<Step>
+
+### Start exploring
+
+Your tables now appear on the **Modeling** page. Open the **Home** page and ask
+questions about your data in natural language.
+
+<Screenshot src="/images/docs/connect/start-exploring.png" caption="Asking a question about the connected data on the Home page" />
+
+</Step>
+
+</Steps>

@@ -1,0 +1,134 @@
+---
+title: Operational Reference
+description: Deploying and running the self-hosted NQRust Analytics Docker Compose stack.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+NQRust Analytics ships as a set of containers orchestrated with Docker Compose. This page is the operational reference for running that stack: the services involved, the ports and volumes they use, the environment variables that configure them, and the data that needs to persist.
+
+## Services in the stack
+
+A standard deployment runs the following containers:
+
+| Service | Image | Role |
+|---------|-------|------|
+| `analytics-ui` | `analytics-ui` | Web application, user management, dashboards |
+| `analytics-service` | `analytics-service` | AI retrieval, SQL generation, and validation |
+| `analytics-engine` | `analytics-engine` | Model context, dialect translation, execution |
+| `ibis-server` | `analytics-engine-ibis` | Python data-transformation / connectivity layer |
+| `qdrant` | `qdrant/qdrant` | Vector database for embeddings |
+| `northwind-db` | `postgres` | Metadata + demo (Northwind) PostgreSQL database |
+| `bootstrap` | bundled | One-shot init of shared application data |
+
+The UI depends on the database, AI service, engine, and Ibis server being up; the AI service depends on Qdrant; and the engine and Ibis server form the execution path. Compose handles this ordering through `depends_on`.
+
+## Ports
+
+The following host ports are published by default. Adjust them in your `.env` file if they conflict with other software on the host machine.
+
+| Service | Default port | Variable |
+|---------|--------------|----------|
+| Analytics UI | `3000` | `ANALYTICS_UI_PORT` |
+| Analytics Service | `5555` | `ANALYTICS_AI_SERVICE_PORT` |
+| Analytics Engine | `8080` | `ANALYTICS_ENGINE_PORT` |
+| Ibis Server | `8000` | `IBIS_SERVER_PORT` |
+| PostgreSQL | `5432` | `POSTGRES_PORT` |
+| Qdrant | `6333` / `6334` | exposed internally |
+
+Qdrant is reached over the internal Compose network and is not published to the host by default.
+
+## Persistent volumes
+
+These named volumes hold state that must survive container restarts and upgrades. Back them up before upgrading.
+
+| Volume | Holds |
+|--------|-------|
+| `data` | Shared application data initialized by the bootstrap step |
+| `qdrant_data` | Embeddings and vector collections |
+| `northwind_data` | PostgreSQL data directory (metadata + demo data) |
+| `documents_storage` | PDFs uploaded in the UI, shared read-only with the AI service |
+| `pageindex_workspace` | Writable workspace for document parsing/indexing |
+
+## Environment variables
+
+Configuration is supplied through a `.env` file consumed by Compose. Copy the provided `.env.example` to `.env` and provide the required values before starting the stack.
+
+### Required
+
+| Variable | Purpose |
+|----------|---------|
+| `OPENAI_API_KEY` | Embeddings and LLM access |
+| `OPENROUTER_API_KEY` | Access to the generation model provider |
+| `GENERATION_MODEL` | The model used for SQL generation (e.g. an OpenRouter model id) |
+| `JWT_SECRET` | Secret for signing application tokens — set to a strong random value |
+| `NEXTAUTH_SECRET` | Secret for the UI auth layer — set to a strong random value |
+| `NEXTAUTH_URL` | Public URL the UI is served from, reachable by your users (e.g. `http://<server-host>:3000`) |
+
+<Callout type="warn">
+Change `JWT_SECRET` and `NEXTAUTH_SECRET` away from their example values before any non-local deployment. Treat all API keys as secrets and keep `.env` out of version control.
+</Callout>
+
+### Service endpoints and ports
+
+| Variable | Purpose |
+|----------|---------|
+| `ANALYTICS_UI_PORT`, `ANALYTICS_ENGINE_PORT`, `IBIS_SERVER_PORT`, `ANALYTICS_AI_SERVICE_PORT`, `POSTGRES_PORT` | Host ports for each service |
+| `ANALYTICS_ENGINE_ENDPOINT`, `IBIS_SERVER_ENDPOINT`, `ANALYTICS_AI_ENDPOINT`, `ANALYTICS_UI_ENDPOINT` | Internal URLs services use to reach one another (use Compose service names, not host IPs) |
+| `CALLBACK_BASE_URL` | URL the AI service uses to POST async results back to the UI. Must resolve from inside the AI service container — use the Compose service name (e.g. `http://analytics-ui:3000`), or async document indexing will silently stall |
+
+### Database
+
+| Variable | Purpose |
+|----------|---------|
+| `DB_TYPE` | Application database type (`pg`) |
+| `PG_URL` | Connection string for the application database |
+| `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` | Credentials for the bundled PostgreSQL instance |
+
+### Vector database
+
+| Variable | Purpose |
+|----------|---------|
+| `QDRANT_HOST` | Hostname of the Qdrant service (default `qdrant`) |
+| `SHOULD_FORCE_DEPLOY` | Leave at `0` for normal operation. Set to `1` only when you intentionally want to wipe and rebuild every Qdrant collection on startup |
+
+### Optional single sign-on
+
+NQRust Identity SSO is off by default (`KEYCLOAK_OAUTH_ENABLED=false`). When enabled, configure `KEYCLOAK_URL`, `KEYCLOAK_PUBLIC_URL`, `KEYCLOAK_REALM`, `KEYCLOAK_CLIENT_ID`, `KEYCLOAK_CLIENT_SECRET`, `KEYCLOAK_DEFAULT_ROLE`, and `KEYCLOAK_AUTO_REGISTER` to integrate with your identity provider.
+
+## Running the stack
+
+<Steps>
+
+<Step>
+### Prepare configuration
+
+Copy `.env.example` to `.env`, set the required API keys and auth secrets, and adjust ports if necessary.
+</Step>
+
+<Step>
+### Start the services
+
+Bring the stack up with Docker Compose. On first run the bootstrap container initializes shared data and the PostgreSQL container loads the demo dataset.
+
+```bash
+docker compose up -d
+```
+</Step>
+
+<Step>
+### Verify
+
+Open the Analytics UI at the configured URL — `http://<server-host>:3000`, using your server's IP address or hostname. Check container health with `docker compose ps` and inspect logs with `docker compose logs -f <service>` if any service fails to start.
+</Step>
+
+</Steps>
+
+## Operational notes
+
+- **Startup ordering.** If the UI is unreachable immediately after `up`, allow the database and AI service a moment to start — the UI waits on them. Persistent failures usually surface in `docker compose logs analytics-service` or `analytics-engine`.
+- **Async document indexing.** If uploaded documents remain stuck at "indexing", confirm `CALLBACK_BASE_URL` points at the UI's Compose service name and is reachable from the AI service container.
+- **Qdrant conflicts.** Keep `SHOULD_FORCE_DEPLOY=0` in normal operation; forcing a rebuild on every startup can cause collection conflicts under multi-worker load.
+- **Upgrades.** Pull new images and recreate the containers; the named volumes above preserve your data across upgrades. Back them up first.
+
+For how these services cooperate at runtime, see [Architecture](/docs/reference/architecture).

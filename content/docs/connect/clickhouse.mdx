@@ -1,0 +1,73 @@
+---
+title: Connect ClickHouse
+description: Connect a ClickHouse database to NQRust Analytics.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<Screenshot src="/images/docs/connect/clickhouse-form.png" caption="The ClickHouse connection form in the Analytics UI" />
+
+## Required permissions
+
+The ClickHouse account you connect with needs:
+
+- `SELECT` on tables and views
+- `CREATE VIEW`
+- `DROP VIEW`
+
+NQRust Analytics creates and drops temporary views during query execution to
+support its analytics and modeling features. These views use unique,
+system-generated names and will not conflict with your existing views.
+
+## Connection settings
+
+| Field | Description |
+| --- | --- |
+| Display name | (required) The name this database shows up as in the Analytics UI. |
+| Host | (required) The ClickHouse server's IP address or hostname, e.g. `<your_click_house_account>.clickhouse.cloud`. |
+| Port | (required) The port the server listens on, e.g. `8443`. |
+| Username | (required) The account used to authenticate. |
+| Password | (required) That account's password. |
+| Database name | (required) The database to connect to. |
+| Use SSL | (optional) Toggle SSL on for the connection. Off by default. |
+
+<Callout type="info">
+  Running ClickHouse locally on macOS or Windows? Use `host.docker.internal` as
+  the host so the container can reach your machine.
+</Callout>
+
+## Steps
+
+<Steps>
+
+<Step>
+### Enter connection details
+Complete the fields above and click **Next**.
+</Step>
+
+<Step>
+### Select tables
+Choose which tables become data models.
+<Screenshot src="/images/docs/connect/select-tables.png" caption="Selecting the tables to import as data models" />
+</Step>
+
+<Step>
+### Define relationships
+Connect your tables by specifying a source table and column, a target table and
+column, and a relationship type — based on primary and foreign keys, or added
+manually.
+<Screenshot src="/images/docs/connect/define-relationships.png" caption="Defining relationships between the imported tables" />
+</Step>
+
+<Step>
+
+### Start exploring
+
+Your tables now appear on the **Modeling** page. Open the **Home** page and ask
+questions about your data in natural language.
+
+<Screenshot src="/images/docs/connect/start-exploring.png" caption="Asking a question about the connected data on the Home page" />
+
+</Step>
+
+</Steps>

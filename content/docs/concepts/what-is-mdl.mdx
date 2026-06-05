@@ -1,0 +1,82 @@
+---
+title: What is MDL?
+description: Modeling Definition Language — the semantic contract at the center of NQRust Analytics.
+---
+
+**Modeling Definition Language (MDL)** is the semantic contract at the center of
+NQRust Analytics. It is how you tell the system, and your team, what your
+business data *means*: which datasets exist, which fields are exposed, how
+entities relate, and which calculations are reusable.
+
+Raw schemas describe storage. MDL describes meaning.
+
+## Why MDL exists
+
+Warehouses are optimized for storing data, not for reasoning about
+the business. A warehouse can tell the system that a table has a column named
+`status`, but not that `status = 4` means refunded. It can expose `loyalty_v3`,
+but not explain that this is the canonical loyalty table.
+
+Without MDL, every dashboard, SQL script, and query must rediscover the same
+logic from raw structure, which leads to duplicated definitions, inconsistent
+metrics, and answers no one fully trusts. MDL makes the important parts explicit:
+it turns business logic into files your team can review, version, and share.
+
+## What MDL defines
+
+MDL models the business-facing shape of your data. Core MDL objects include:
+
+- **Models** — logical datasets backed by physical tables or SQL definitions.
+- **Columns** — exposed fields, including renamed fields, expressions, and
+  primary keys.
+- **Relationships** — reusable join logic between models.
+- **Calculated fields** — business logic defined once and reused across queries.
+- **Views** — named SQL statements that behave like stable virtual tables.
+
+## MDL as a contract
+
+The word *contract* matters. MDL is not merely documentation. It is the agreement
+between your data team, the AI service, and the query engine:
+
+- **For data teams**, MDL is a reviewable place to define business logic.
+- **For the AI service**, MDL is the structured context used to choose models,
+  joins, and calculations.
+- **For applications**, MDL is a stable interface over changing warehouse
+  structure.
+- **For the engine**, MDL is the source of truth for planning SQL against the
+  underlying data source.
+
+When the contract changes, you can review the diff. When a query runs, the system
+plans against the contract.
+
+## How MDL improves answers
+
+Raw schemas leave too much room for interpretation. MDL narrows that space. With
+MDL, the system can:
+
+- map business questions to the right modeled datasets
+- prefer canonical tables over legacy or staging tables
+- follow defined relationships instead of inventing joins
+- reuse approved calculations instead of creating one-off metrics
+- query views as stable analytical interfaces
+
+The result is not perfect accuracy. It is better *grounding*. MDL gives the system
+fewer reasons to guess.
+
+## Why files matter
+
+MDL lives in files because business context should be portable. Your definitions
+should not be trapped inside one BI tool or vendor UI. They should be easy to
+inspect, commit, review, and deploy across environments.
+
+- Models, views, and relationships live in the project and can be version
+  controlled.
+- Connection profiles live outside the project, so credentials do not leak into
+  shared files.
+
+## In short
+
+- **Schema** describes how data is stored.
+- **MDL** describes how data should be understood and queried.
+- **Context** combines MDL with instructions and memory so the system can operate
+  reliably.

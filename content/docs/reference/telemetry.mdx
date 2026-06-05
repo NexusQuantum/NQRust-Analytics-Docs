@@ -1,0 +1,55 @@
+---
+title: Telemetry
+description: NQRust Analytics ships with telemetry disabled by default — here's what it is and how to control it.
+---
+
+NQRust Analytics can optionally report **anonymous** usage statistics to help
+improve the product. It is **disabled by default** in the installer.
+
+<Callout type="info">
+  Telemetry is off by default. Nothing is sent unless you explicitly enable it.
+  Self-hosted deployments commonly leave it off.
+</Callout>
+
+## Controlling telemetry
+
+Telemetry is controlled by two environment variables in your `.env`, both
+defaulting to `false`:
+
+| Variable | Controls |
+| --- | --- |
+| `TELEMETRY_ENABLED` | Backend (AI service / engine) telemetry |
+| `NEXT_PUBLIC_TELEMETRY_ENABLED` | Frontend (UI) telemetry |
+
+If you choose to enable telemetry, reporting uses [PostHog](https://posthog.com/),
+configured with:
+
+```bash
+TELEMETRY_ENABLED=true
+NEXT_PUBLIC_TELEMETRY_ENABLED=true
+POSTHOG_API_KEY=your-posthog-key
+POSTHOG_HOST=https://app.posthog.com
+```
+
+After changing these, re-run the installer and select **Proceed with
+installation** to apply the change.
+
+## What would be collected
+
+When enabled, events are anonymous — each carries a randomly generated UUID and
+environment properties, never identifying information. Collected data would
+include the following:
+
+- Error logs and feature/page events
+- Question and answer activity (asked questions, generated SQL)
+- Connected data-source metadata (table counts, names, column names and types,
+  relationships)
+
+Events **never** include user identities (name, email), data-source credentials,
+IP addresses, OS usernames, file paths, or document contents. Geo-IP resolution is
+disabled.
+
+<Callout type="warn">
+  To keep telemetry off, leave `TELEMETRY_ENABLED` and
+  `NEXT_PUBLIC_TELEMETRY_ENABLED` unset or set to `false` (the default).
+</Callout>

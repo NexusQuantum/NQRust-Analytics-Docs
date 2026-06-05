@@ -1,0 +1,64 @@
+---
+title: Connect SQL Server
+description: Connect a Microsoft SQL Server database to NQRust Analytics.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+To connect a Microsoft SQL Server database to NQRust Analytics, enter the
+connection details, select your tables, and define the relationships between them.
+
+<Screenshot src="/images/docs/connect/sqlserver-form.png" caption="The SQL Server connection form in the Analytics UI" />
+
+## Connection settings
+
+| Field | Description |
+| --- | --- |
+| Display name | (required) The name this database shows up as in the Analytics UI. |
+| Host | (required) Your SQL Server database's IP address or hostname, e.g. `10.1.1.1`. |
+| Port | (required) The port your SQL Server database listens on, e.g. `1433`. |
+| Username | (required) The account used to access the database. |
+| Password | (required) That account's password. |
+| Database name | (required) The name of the database you want to connect to. |
+| Enable Trust Server Certificate | (optional) Toggle that skips server certificate validation. On by default. If you use a trusted certificate, you can disable it. |
+
+<Callout type="info">
+  Running SQL Server locally on macOS or Windows? Use `host.docker.internal` as
+  the host so the container can reach your machine.
+</Callout>
+
+## Steps
+
+<Steps>
+
+<Step>
+### Enter connection details
+Select the SQL Server option in the data source section, complete the settings
+above, and continue.
+</Step>
+
+<Step>
+### Select tables
+Choose the tables you want to work with. Each table becomes a data model.
+<Screenshot src="/images/docs/connect/select-tables.png" caption="Selecting the tables to import as data models" />
+</Step>
+
+<Step>
+### Define relationships
+Connect your tables using their primary and foreign keys, or add the
+relationships manually. You can also skip this step and configure it later.
+<Screenshot src="/images/docs/connect/define-relationships.png" caption="Defining relationships between the imported tables" />
+</Step>
+
+<Step>
+
+### Start exploring
+
+Your tables now appear on the **Modeling** page. Open the **Home** page and ask
+questions about your data in natural language.
+
+<Screenshot src="/images/docs/connect/start-exploring.png" caption="Asking a question about the connected data on the Home page" />
+
+</Step>
+
+</Steps>

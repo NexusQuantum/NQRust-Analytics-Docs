@@ -1,0 +1,46 @@
+---
+title: Security
+description: How NQRust Analytics handles your data — read-only access, on-demand queries, and self-hosted control.
+---
+
+NQRust Analytics is designed to keep your data under your control. Because it runs
+entirely on your own infrastructure, your data does not leave your environment.
+
+## Read-only by design
+
+NQRust Analytics follows a **read-only policy** for your connected data sources.
+It generates and runs `SELECT` queries to answer questions — it does not write to,
+modify, or delete your source data.
+
+When a result or preview is needed, the query is run **on demand**, and preview
+data is **not retained** in NQRust Analytics' own storage. This prevents sensitive
+values from being copied or held longer than necessary.
+
+## Temporary views
+
+During query execution, the engine may create **temporary, uniquely named views**
+in your database. Because the names are system-generated, they do not clash with or
+overwrite anything already present. The minimum privileges each connector needs
+(typically `SELECT`, plus `CREATE`/`DROP` on temporary views) are listed on each
+[data source page](/docs/connect/overview).
+
+## Credentials stay separate
+
+Connection profiles — hosts, usernames, passwords, keys — are kept separate from
+your modeling definitions. Your models, relationships, and views can be reviewed
+and version-controlled without exposing credentials. See
+[Why files matter](/docs/concepts/what-is-mdl#why-files-matter).
+
+## Access control
+
+Every request to NQRust Analytics requires authentication, and access is governed
+by roles. See:
+
+<Cards>
+  <Card title="Accounts & sign-in" href="/docs/accounts/overview">
+    How users authenticate, and single sign-on.
+  </Card>
+  <Card title="Roles & access" href="/docs/access-control/overview">
+    What each role can read and change.
+  </Card>
+</Cards>

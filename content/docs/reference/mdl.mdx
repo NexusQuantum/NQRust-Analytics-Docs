@@ -1,0 +1,127 @@
+---
+title: MDL Schema Reference
+description: Field-level reference for the Modeling Definition Language used by NQRust Analytics.
+---
+
+The Modeling Definition Language (MDL) is how NQRust Analytics captures the meaning of your data. It describes the **models** (logical tables), **columns**, **relationships**, **calculated fields**, and **views** that the platform reasons over when generating SQL. The Analytics Engine compiles this definition into the semantic context that drives retrieval and SQL generation.
+
+For a conceptual introduction, see [What is MDL](/docs/concepts/what-is-mdl). This page provides the field-level reference.
+
+<Callout type="info">
+MDL is authored in a structured form and compiled into a manifest the engine consumes. Property names in the compiled JSON manifest are written in camelCase.
+</Callout>
+
+## Models
+
+A model is a logical table built on top of a physical table or a SQL query. It is the unit the platform plans queries against.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | Unique identifier for the model. |
+| `tableReference` | object | Points at the underlying physical table (catalog/schema/table). Use this when the model maps directly to a table. |
+| `refSql` | string | A SQL `SELECT` that defines the model. Use this instead of `tableReference` for derived sources. |
+| `columns` | array | The columns exposed by the model (see below). |
+| `primaryKey` | string | Name of the column that uniquely identifies a row. Required for relationships that join on this model. |
+| `properties` | object | Optional metadata such as a display name or description that helps the AI understand the model. |
+
+A model uses **either** `tableReference` **or** `refSql`, not both.
+
+```json
+{
+  "name": "Orders",
+  "tableReference": {
+    "catalog": "northwind",
+    "schema": "public",
+    "table": "orders"
+  },
+  "primaryKey": "order_id",
+  "columns": [
+    { "name": "order_id", "type": "integer", "notNull": true },
+    { "name": "customer_id", "type": "integer" },
+    { "name": "order_date", "type": "date" }
+  ],
+  "properties": { "description": "One row per customer order." }
+}
+```
+
+## Columns
+
+Columns describe the fields of a model. They can map to a physical column, derive a value from an expression, or traverse a relationship.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | Column identifier. |
+| `type` | string | Data type (e.g. `integer`, `varchar`, `date`, `double`). |
+| `notNull` | boolean | Whether the column is guaranteed non-null. |
+| `isCalculated` | boolean | Marks the column as derived from an `expression` rather than stored. |
+| `expression` | string | The SQL/MDL expression evaluated for a calculated field. |
+| `relationship` | string | Name of the relationship this column traverses (for relationship-aware columns). |
+| `isHidden` | boolean | Hides the column from the engine's exposed surface while keeping it available internally. |
+| `properties` | object | Optional metadata such as a description to guide the AI. |
+
+## Relationships
+
+Relationships define how models join. They let the platform answer questions that span multiple tables without the user describing the join.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | Unique identifier for the relationship. |
+| `models` | array | The two models being related, e.g. `["Orders", "Customers"]`. |
+| `joinType` | enum | One of `ONE_TO_ONE`, `ONE_TO_MANY`, `MANY_TO_ONE`, or `MANY_TO_MANY`. |
+| `condition` | string | The join predicate expressed as an equality between the two models' keys. |
+
+```json
+{
+  "name": "OrdersCustomers",
+  "models": ["Orders", "Customers"],
+  "joinType": "MANY_TO_ONE",
+  "condition": "Orders.customer_id = Customers.customer_id"
+}
+```
+
+## Calculated fields
+
+A calculated field is a column with `isCalculated` set to `true` and an `expression`. Calculated fields let you define metrics and derived values once, in the model, so they are computed consistently each time. Expressions may reference other columns on the model and, when a `relationship` is set, columns reachable through that relationship.
+
+```json
+{
+  "name": "total_amount",
+  "type": "double",
+  "isCalculated": true,
+  "expression": "unit_price * quantity * (1 - discount)"
+}
+```
+
+An expression that aggregates across a relationship — for example, totaling order line items up to the order — uses the relationship name so the engine knows the join path:
+
+```json
+{
+  "name": "order_total",
+  "type": "double",
+  "isCalculated": true,
+  "relationship": "OrderItems",
+  "expression": "sum(OrderItems.total_amount)"
+}
+```
+
+## Views
+
+A view is a saved SQL `SELECT` that becomes a reusable, queryable object. Views are useful for encoding common question shapes or curated subsets of the data so they can be referenced by name.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | Unique identifier for the view. |
+| `statement` | string | The full SQL `SELECT` statement that defines the view. |
+| `properties` | object | Optional metadata such as a description. |
+
+```json
+{
+  "name": "MonthlyRevenue",
+  "statement": "SELECT date_trunc('month', order_date) AS month, sum(total_amount) AS revenue FROM Orders GROUP BY 1",
+  "properties": { "description": "Revenue rolled up by month." }
+}
+```
+
+## Putting it together
+
+A complete MDL combines these pieces into one semantic layer: models name your logical tables, columns (including calculated fields) describe their fields, relationships express how they join, and views capture reusable queries. The Analytics Engine compiles this into the context that the Analytics Service retrieves from when generating SQL — see [Architecture](/docs/reference/architecture) for how that flows through the system.

@@ -1,0 +1,83 @@
+---
+title: Connect BigQuery
+description: Connect a Google BigQuery dataset to NQRust Analytics.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+This guide describes how to connect a BigQuery dataset to NQRust Analytics:
+prepare a service account, enter credentials, choose tables, and define
+relationships.
+
+<Screenshot src="/images/docs/connect/bigquery-form.png" caption="The BigQuery connection form in the Analytics UI" />
+
+## Prerequisites
+
+- A Google Cloud Platform account with an active project.
+- A BigQuery dataset inside that project.
+- A service account with a JSON key file for authentication.
+
+## Prepare a service account
+
+Create a service account under **IAM & Admin**, then grant it two roles so that it
+can view your dataset and run queries:
+
+- **BigQuery Data Viewer**
+- **BigQuery User**
+
+Generate a JSON key for the service account and download it.
+
+<Callout type="warn">
+  A service account key can only be downloaded once. If you lose or delete it,
+  you will need to create a new key.
+</Callout>
+
+## Connection settings
+
+| Field | Description |
+| --- | --- |
+| Display name | (required) The name this dataset shows up as in the Analytics UI, e.g. `Our BigQuery`. |
+| Project ID | (required) The GCP project ID the dataset lives in. |
+| Dataset ID | (required) The dataset you want to connect to. |
+| Credentials | (required) Upload a Google Cloud service-account JSON key file using the **Click to upload JSON key file** button. |
+
+## Steps
+
+<Steps>
+
+<Step>
+### Enter connection details
+Complete the fields above. Authentication is via the uploaded service-account
+JSON key file, so upload it using the **Click to upload JSON key file** button,
+then continue.
+</Step>
+
+<Step>
+### Select tables
+Choose the tables from the dataset that you want as data models.
+<Screenshot src="/images/docs/connect/select-tables.png" caption="Selecting the tables to import as data models" />
+</Step>
+
+<Step>
+### Define relationships
+Connect your tables using their primary and foreign keys, or skip this step.
+<Screenshot src="/images/docs/connect/define-relationships.png" caption="Defining relationships between the imported tables" />
+</Step>
+
+<Step>
+
+### Start exploring
+
+Your tables now appear on the **Modeling** page. Open the **Home** page and ask
+questions about your data in natural language.
+
+<Screenshot src="/images/docs/connect/start-exploring.png" caption="Asking a question about the connected data on the Home page" />
+
+</Step>
+
+</Steps>
+
+<Callout type="info">
+  You can also import Google Sheets into BigQuery and query them here. When you do,
+  set the header row count appropriately and let BigQuery auto-detect the schema.
+</Callout>

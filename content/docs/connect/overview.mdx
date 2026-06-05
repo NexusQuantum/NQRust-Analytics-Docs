@@ -1,0 +1,47 @@
+---
+title: Connect Data Sources
+description: Link your databases and files to NQRust Analytics so you can query them in natural language.
+---
+
+NQRust Analytics queries your own data, so connecting a data source is the first
+step after installation. Each connector requires slightly different details.
+Have your host, credentials, and database name ready before you begin.
+
+## Supported data sources
+
+NQRust Analytics connects to the following 11 sources:
+
+<Cards>
+  <Card title="PostgreSQL" href="/docs/connect/postgresql">Open-source relational database.</Card>
+  <Card title="MySQL" href="/docs/connect/mysql">Popular open-source relational database.</Card>
+  <Card title="SQL Server" href="/docs/connect/sqlserver">Microsoft SQL Server.</Card>
+  <Card title="Oracle" href="/docs/connect/oracle">Oracle Database.</Card>
+  <Card title="BigQuery" href="/docs/connect/bigquery">Google Cloud's serverless warehouse.</Card>
+  <Card title="Snowflake" href="/docs/connect/snowflake">Cloud data platform.</Card>
+  <Card title="Redshift" href="/docs/connect/redshift">Amazon's cloud data warehouse.</Card>
+  <Card title="Athena" href="/docs/connect/athena">Serverless queries over Amazon S3.</Card>
+  <Card title="DuckDB" href="/docs/connect/duckdb">Query CSV, JSON, and Parquet files.</Card>
+  <Card title="ClickHouse" href="/docs/connect/clickhouse">Column-oriented analytics database.</Card>
+  <Card title="Trino" href="/docs/connect/trino">Distributed SQL query engine.</Card>
+</Cards>
+
+## Add a connection
+
+Open the Analytics UI, locate the **Connect a data source** area, and select the
+source you want.
+
+<Screenshot src="/images/docs/connect/data-source-picker.png" caption="The data source picker showing the grid of supported connectors" /> Then follow the connector-specific guide above to complete
+the configuration, choose your tables, and optionally define relationships.
+
+## Update a connection
+
+To change the details of an existing connection — for example a rotated password
+or a new host — go to **Settings > Data source settings** and edit the values
+there. You do not need to start over.
+
+## Remove a connection
+
+Removing a connection currently requires resetting the entire project. Open
+**Settings > Project settings** and reset, then configure your data source and
+models again from scratch. When you only need to update connection details, use
+the data source settings described above to avoid a full reset.
