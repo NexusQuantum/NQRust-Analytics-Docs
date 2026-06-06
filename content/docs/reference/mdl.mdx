@@ -5,7 +5,7 @@ description: Field-level reference for the Modeling Definition Language used by 
 
 The Modeling Definition Language (MDL) is how NQRust Analytics captures the meaning of your data. It describes the **models** (logical tables), **columns**, **relationships**, **calculated fields**, and **views** that the platform reasons over when generating SQL. The Analytics Engine compiles this definition into the semantic context that drives retrieval and SQL generation.
 
-For a conceptual introduction, see [What is MDL](/docs/concepts/what-is-mdl). This page provides the field-level reference.
+For a conceptual introduction, see [What is MDL](/concepts/what-is-mdl). This page provides the field-level reference.
 
 <Callout type="info">
 MDL is authored in a structured form and compiled into a manifest the engine consumes. Property names in the compiled JSON manifest are written in camelCase.
@@ -124,4 +124,4 @@ A view is a saved SQL `SELECT` that becomes a reusable, queryable object. Views 
 
 ## Putting it together
 
-A complete MDL combines these pieces into one semantic layer: models name your logical tables, columns (including calculated fields) describe their fields, relationships express how they join, and views capture reusable queries. The Analytics Engine compiles this into the context that the Analytics Service retrieves from when generating SQL — see [Architecture](/docs/reference/architecture) for how that flows through the system.
+A complete MDL combines these pieces into one semantic layer: models name your logical tables, columns (including calculated fields) describe their fields, relationships express how they join, and views capture reusable queries. The Analytics Engine compiles this into the context that the Analytics Service retrieves from when generating SQL — see [Architecture](/reference/architecture) for how that flows through the system.

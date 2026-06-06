@@ -15,7 +15,7 @@ step, and to **fail loudly when it would otherwise guess**.
 ### MDL: the system cannot name what is not modeled
 
 Raw warehouses are full of ambiguous joins and near-duplicate tables
-(`customers` vs `customers_v3` vs `loyalty_v3`). [MDL](/docs/concepts/what-is-mdl)
+(`customers` vs `customers_v3` vs `loyalty_v3`). [MDL](/concepts/what-is-mdl)
 collapses those into one canonical surface.
 
 If `email` is not in the `customers` model, the system cannot query it; it does not

@@ -5,7 +5,7 @@ description: How the NQRust Analytics services fit together to turn natural lang
 
 NQRust Analytics is a self-hosted platform that turns plain-language questions into validated SQL against your own databases. Rather than relying on a single prompt, it splits the problem across a small set of cooperating services: a web application, an AI reasoning service, a semantic modeling engine, and a Python data-transformation layer. Supporting infrastructure (a vector database and a metadata/demo PostgreSQL instance) completes the stack.
 
-The guiding principle is a clean separation between **meaning** and **execution**. Your business semantics live in an explicit model definition (see [What is MDL](/docs/concepts/what-is-mdl)), while the runtime is responsible for retrieving the right context, generating SQL, validating it, translating it for your database dialect, and running it.
+The guiding principle is a clean separation between **meaning** and **execution**. Your business semantics live in an explicit model definition (see [What is MDL](/concepts/what-is-mdl)), while the runtime is responsible for retrieving the right context, generating SQL, validating it, translating it for your database dialect, and running it.
 
 ## Why correctness needs more than one component
 
@@ -85,4 +85,4 @@ NQRust Analytics keeps context and execution apart:
 - The **Ibis Server** provides the Python connectivity layer for running those queries.
 - **Qdrant** and **PostgreSQL** supply embeddings storage and metadata/demo data.
 
-That separation is what makes the platform inspectable, portable, and dependable. To see how a question moves through these components in practice, read [How it works](/docs/concepts/how-it-works).
+That separation is what makes the platform inspectable, portable, and dependable. To see how a question moves through these components in practice, read [How it works](/concepts/how-it-works).

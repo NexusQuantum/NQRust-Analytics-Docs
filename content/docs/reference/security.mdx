@@ -22,14 +22,14 @@ During query execution, the engine may create **temporary, uniquely named views*
 in your database. Because the names are system-generated, they do not clash with or
 overwrite anything already present. The minimum privileges each connector needs
 (typically `SELECT`, plus `CREATE`/`DROP` on temporary views) are listed on each
-[data source page](/docs/connect/overview).
+[data source page](/connect/overview).
 
 ## Credentials stay separate
 
 Connection profiles — hosts, usernames, passwords, keys — are kept separate from
 your modeling definitions. Your models, relationships, and views can be reviewed
 and version-controlled without exposing credentials. See
-[Why files matter](/docs/concepts/what-is-mdl#why-files-matter).
+[Why files matter](/concepts/what-is-mdl#why-files-matter).
 
 ## Access control
 
@@ -37,10 +37,10 @@ Every request to NQRust Analytics requires authentication, and access is governe
 by roles. See:
 
 <Cards>
-  <Card title="Accounts & sign-in" href="/docs/accounts/overview">
+  <Card title="Accounts & sign-in" href="/accounts/overview">
     How users authenticate, and single sign-on.
   </Card>
-  <Card title="Roles & access" href="/docs/access-control/overview">
+  <Card title="Roles & access" href="/access-control/overview">
     What each role can read and change.
   </Card>
 </Cards>
