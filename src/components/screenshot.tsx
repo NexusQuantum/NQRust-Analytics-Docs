@@ -45,14 +45,16 @@ export function Screenshot({
   }
 
   return (
-    <span className="my-4 block overflow-hidden rounded-lg border">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt={alt ?? caption ?? 'Screenshot'}
-        onError={() => setFailed(true)}
-        className="block w-full"
-      />
+    <span className="my-4 block overflow-hidden rounded-lg border shadow-sm">
+      <span className="flex justify-center bg-fd-muted/30">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={alt ?? caption ?? 'Screenshot'}
+          onError={() => setFailed(true)}
+          className="block max-h-[32rem] w-auto max-w-full object-contain"
+        />
+      </span>
       {caption && (
         <span className="block border-t bg-fd-card px-3 py-2 text-center text-xs text-fd-muted-foreground">
           {caption}
